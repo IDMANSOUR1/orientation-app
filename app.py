@@ -24,18 +24,19 @@ if page == "🧠 Personnalité":
 
     st.text_input("Prénom de l'élève :", key="prenom")
 
-    options1 = ["Seul(e)", "En groupe", "Les deux"]
-valeur_groupe = st.session_state.get("groupe", None)
-index_groupe = options1.index(valeur_groupe) if valeur_groupe in options1 else None
+    options1 = ["-- Sélectionne --", "Seul(e)", "En groupe", "Les deux"]
 
+# Affichage du bouton radio
 choix = st.radio(
     "Préféres-tu travailler seul(e) ou en groupe ?",
     options1,
-    index=index_groupe,
-    key="groupe" if index_groupe is not None else None
+    key="groupe"
 )
-if index_groupe is None and choix:
+
+# Vérifie si une vraie option est choisie (pas le placeholder)
+if choix != "-- Sélectionne --":
     st.session_state["groupe"] = choix
+
 
 
     options2 = ["Organisé(e)", "Spontané(e)"]
