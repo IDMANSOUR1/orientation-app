@@ -66,7 +66,7 @@ elif page == "💪 Compétences":
 # === SECTION 3 : Préférences ===
 elif page == "❤️ Préférences":
     st.header("❤️ Tes préférences")
-
+    options7 = ["Oui", "Non", "Parfois"]  
     options9 = ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"]
     val10 = st.session_state.get("matiere", options9[0])
     st.session_state["matiere"] = st.selectbox("Quelle matière préfères-tu à l’école ?", options9, index=options9.index(val10))
