@@ -25,9 +25,6 @@ page = st.sidebar.selectbox("📂 Choisir une section", [
     "🧠 Personnalité", "💪 Compétences", "❤️ Préférences", "📊 Résumé"
 ])
 
-# Dictionnaire global de réponses
-reponses = {}
-
 # 🔹 PAGE 1 : PERSONNALITÉ
 if page == "🧠 Personnalité":
     st.header("🧠 Profil de personnalité")
