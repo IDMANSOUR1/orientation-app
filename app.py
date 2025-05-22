@@ -20,7 +20,7 @@ st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
 st.title("🎓 Questionnaire d’Orientation Scolaire")
 
 # 📛 Nom de l'élève
-st.session_state["prenom"] = st.text_input("Prénom de l'élève :", key="prenom")
+prenom = st.text_input("Prénom de l'élève :", key="prenom")
 
 # Navigation
 page = st.sidebar.selectbox("📂 Choisir une section", [
