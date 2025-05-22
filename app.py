@@ -6,14 +6,13 @@ from fpdf import FPDF
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Configuration générale
-st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
-st.title("🎓 Questionnaire d’Orientation Scolaire")
-
 # Clé API
 openai.api_key = "sk-...VOTRE_CLÉ_ICI..."  # Remplace par ta vraie clé
 
-# Navigation entre pages
+st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
+st.title("🎓 Questionnaire d’Orientation Scolaire")
+
+# Navigation
 page = st.sidebar.selectbox("📂 Choisir une section", [
     "🧠 Personnalité", "💪 Compétences", "❤️ Préférences", "📊 Résumé"
 ], key="page")
@@ -23,40 +22,61 @@ if page == "🧠 Personnalité":
     st.header("🧠 Profil de personnalité")
 
     st.text_input("Prénom de l'élève :", key="prenom")
-    st.radio("Préféres-tu travailler seul(e) ou en groupe ?", ["Seul(e)", "En groupe", "Les deux"], key="groupe")
-    st.radio("Es-tu plutôt organisé(e) ou spontané(e) ?", ["Organisé(e)", "Spontané(e)"], key="organisation")
-    st.radio("Quand tu fais une erreur, tu :", ["Essaies de comprendre", "Te décourages", "Cherches de l’aide"], key="erreur")
-    st.radio("Tu préfères :", ["Suivre les consignes", "Inventer ta méthode", "Un peu des deux"], key="consignes")
-    st.radio("Te décris-tu comme quelqu’un de curieux(se) ?", ["Oui", "Non", "Parfois"], key="curiosite")
+
+    options1 = ["Seul(e)", "En groupe", "Les deux"]
+    st.radio("Préféres-tu travailler seul(e) ou en groupe ?", options1, key="groupe", index=options1.index(st.session_state.get("groupe", options1[0])))
+
+    options2 = ["Organisé(e)", "Spontané(e)"]
+    st.radio("Es-tu plutôt organisé(e) ou spontané(e) ?", options2, key="organisation", index=options2.index(st.session_state.get("organisation", options2[0])))
+
+    options3 = ["Essaies de comprendre", "Te décourages", "Cherches de l’aide"]
+    st.radio("Quand tu fais une erreur, tu :", options3, key="erreur", index=options3.index(st.session_state.get("erreur", options3[0])))
+
+    options4 = ["Suivre les consignes", "Inventer ta méthode", "Un peu des deux"]
+    st.radio("Tu préfères :", options4, key="consignes", index=options4.index(st.session_state.get("consignes", options4[0])))
+
+    options5 = ["Oui", "Non", "Parfois"]
+    st.radio("Te décris-tu comme quelqu’un de curieux(se) ?", options5, key="curiosite", index=options5.index(st.session_state.get("curiosite", options5[0])))
 
 # 🔹 SECTION 2 : Compétences
 elif page == "💪 Compétences":
     st.header("💪 Tes compétences")
 
-    st.radio("Es-tu plus à l’aise à l’écrit ou à l’oral ?", ["À l’écrit", "À l’oral", "Les deux"], key="expression")
-    st.radio("Sais-tu expliquer facilement une idée aux autres ?", ["Oui", "Non", "Parfois"], key="expliquer")
-    st.radio("Es-tu à l’aise avec les outils numériques ?", ["Oui", "Non", "Un peu"], key="numerique")
-    st.radio("Aimes-tu résoudre des problèmes complexes ?", ["Oui", "Non", "Parfois"], key="probleme")
+    options6 = ["À l’écrit", "À l’oral", "Les deux"]
+    st.radio("Es-tu plus à l’aise à l’écrit ou à l’oral ?", options6, key="expression", index=options6.index(st.session_state.get("expression", options6[0])))
+
+    options7 = ["Oui", "Non", "Parfois"]
+    st.radio("Sais-tu expliquer facilement une idée aux autres ?", options7, key="expliquer", index=options7.index(st.session_state.get("expliquer", options7[0])))
+
+    options8 = ["Oui", "Non", "Un peu"]
+    st.radio("Es-tu à l’aise avec les outils numériques ?", options8, key="numerique", index=options8.index(st.session_state.get("numerique", options8[0])))
+
+    st.radio("Aimes-tu résoudre des problèmes complexes ?", options7, key="probleme", index=options7.index(st.session_state.get("probleme", options7[0])))
 
 # 🔹 SECTION 3 : Préférences
 elif page == "❤️ Préférences":
     st.header("❤️ Tes préférences")
 
-    st.selectbox("Quelle matière préfères-tu à l’école ?", ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"], key="matiere")
-    st.radio("Chez toi, tu préfères :", ["Lire", "Dessiner", "Bricoler", "Jouer", "Écouter de la musique", "Autre"], key="activite")
-    st.radio("Aimes-tu les activités créatives ?", ["Oui", "Non", "Un peu"], key="creativite")
-    st.radio("Tu t’ennuies vite quand une activité est répétitive ?", ["Oui", "Non", "Parfois"], key="repetition")
-    st.radio("Dans un film, tu préfères :", ["L’histoire", "Les images/effets", "Le message profond"], key="film")
+    options9 = ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"]
+    st.selectbox("Quelle matière préfères-tu à l’école ?", options9, key="matiere", index=options9.index(st.session_state.get("matiere", options9[0])))
 
-# 🔹 SECTION 4 : Résumé & Analyse
+    options10 = ["Lire", "Dessiner", "Bricoler", "Jouer", "Écouter de la musique", "Autre"]
+    st.radio("Chez toi, tu préfères :", options10, key="activite", index=options10.index(st.session_state.get("activite", options10[0])))
+
+    st.radio("Aimes-tu les activités créatives ?", options7, key="creativite", index=options7.index(st.session_state.get("creativite", options7[0])))
+
+    st.radio("Tu t’ennuies vite quand une activité est répétitive ?", options7, key="repetition", index=options7.index(st.session_state.get("repetition", options7[0])))
+
+    options11 = ["L’histoire", "Les images/effets", "Le message profond"]
+    st.radio("Dans un film, tu préfères :", options11, key="film", index=options11.index(st.session_state.get("film", options11[0])))
+
+# 🔹 SECTION 4 : Résumé
 elif page == "📊 Résumé":
     st.header("📊 Résumé de tes réponses")
     prenom = st.session_state.get("prenom", "")
-
     if prenom:
         st.markdown(f"👤 **Élève : {prenom}**")
 
-    # Construction des réponses à partir de session_state
     reponses = {
         "Travail en groupe": st.session_state.get("groupe", ""),
         "Organisation": st.session_state.get("organisation", ""),
@@ -74,11 +94,9 @@ elif page == "📊 Résumé":
         "Film préféré": st.session_state.get("film", "")
     }
 
-    # Affichage
     for question, reponse in reponses.items():
         st.write(f"**{question}** : {reponse}")
 
-    # 🔎 Analyse IA
     if st.button("🔎 Analyser mon profil"):
         with st.spinner("Analyse en cours..."):
             try:
@@ -86,17 +104,12 @@ elif page == "📊 Résumé":
                 for q, r in reponses.items():
                     prompt += f"- {q} : {r}\n"
                 prompt += """
-Analyse ces réponses. Si certaines sont absurdes ou vides, donne un score bas ou 'non mesurable'.
-
-Donne ensuite :
-1. L’orientation recommandée (scientifique, littéraire ou mixte)
-2. Une justification
-3. Un score sur 10 pour :
-   - Logique
-   - Créativité
-   - Communication
-   - Curiosité scientifique
-   - Expression artistique
+Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte), une justification et un score sur 10 pour :
+- Logique
+- Créativité
+- Communication
+- Curiosité scientifique
+- Expression artistique
 """
 
                 response = openai.ChatCompletion.create(
@@ -108,7 +121,7 @@ Donne ensuite :
                 st.success("🎯 Résultat")
                 st.markdown(result_text)
 
-                # Graphe radar
+                # 🔢 Extraction et graphe radar
                 scores = {}
                 for line in result_text.splitlines():
                     if ":" in line and any(k in line.lower() for k in ["logique", "créativité", "communication", "curiosité", "artistique"]):
@@ -133,7 +146,7 @@ Donne ensuite :
                     ax.set_xticklabels(labels)
                     st.pyplot(fig)
 
-                # PDF export
+                # 📄 PDF export
                 pdf = FPDF()
                 pdf.add_page()
                 pdf.set_font("Arial", size=12)
