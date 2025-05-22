@@ -22,7 +22,8 @@ st.title("🎓 Questionnaire d’Orientation Scolaire")
 # Menu
 page = st.sidebar.selectbox("📂 Choisir une section", [
     "🧠 Personnalité", "💪 Compétences", "❤️ Préférences", "📊 Résumé"
-])
+], key="page")
+
 
 # 🔹 PAGE 1 : PERSONNALITÉ
 if page == "🧠 Personnalité":
