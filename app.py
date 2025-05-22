@@ -141,4 +141,12 @@ Donne ensuite :
                 for q, r in reponses.items():
                     pdf.multi_cell(0, 10, f"{q} : {r}")
                 pdf.multi_cell(0, 10, "\nRésultat IA :")
-                pdf.multi_cell(_
+                pdf.multi_cell(0, 10, result_text)
+                buffer = BytesIO()
+                buffer.write(pdf.output(dest='S').encode("latin-1"))
+                b64 = base64.b64encode(buffer.getvalue()).decode()
+                href = f'<a href="data:application/octet-stream;base64,{b64}" download="orientation_resultat.pdf">📄 Télécharger le PDF</a>'
+                st.markdown(href, unsafe_allow_html=True)
+
+            except Exception as e:
+                st.error("❌ Erreur : " + str(e))
