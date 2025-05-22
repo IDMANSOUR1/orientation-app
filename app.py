@@ -8,6 +8,31 @@ import matplotlib.pyplot as plt
 
 # Configuration générale
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
+
+# Initialiser toutes les clés dès le départ
+def init_state(key, default):
+    if key not in st.session_state:
+        st.session_state[key] = default
+
+init_state("prenom", "")
+init_state("groupe", "Seul(e)")
+init_state("organisation", "Organisé(e)")
+init_state("erreur", "Essaies de comprendre")
+init_state("consignes", "Suivre les consignes")
+init_state("curiosite", "Oui")
+
+init_state("expression", "À l’écrit")
+init_state("expliquer", "Oui")
+init_state("numerique", "Oui")
+init_state("probleme", "Oui")
+
+init_state("matiere", "Maths")
+init_state("activite", "Lire")
+init_state("creativite", "Oui")
+init_state("repetition", "Oui")
+init_state("film", "L’histoire")
+
+
 st.title("🎓 Questionnaire d’Orientation Scolaire")
 
 # Clé API
