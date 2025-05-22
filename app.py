@@ -7,6 +7,12 @@ import base64
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+
+if "reponses" not in st.session_state:
+    st.session_state["reponses"] = {}
+reponses = st.session_state["reponses"]
+
 # Clé API
 openai.api_key = "sk-...VOTRE_CLÉ_ICI..."
 
@@ -25,28 +31,98 @@ reponses = {}
 # 🔹 PAGE 1 : PERSONNALITÉ
 if page == "🧠 Personnalité":
     st.header("🧠 Profil de personnalité")
-    reponses["Travail en groupe"] = st.radio("Préféres-tu travailler seul(e) ou en groupe ?", ["Seul(e)", "En groupe", "Les deux"])
-    reponses["Organisation"] = st.radio("Es-tu plutôt organisé(e) ou spontané(e) ?", ["Organisé(e)", "Spontané(e)"])
-    reponses["Face à l’erreur"] = st.radio("Quand tu fais une erreur, tu :", ["Essaies de comprendre", "Te décourages", "Cherches de l’aide"])
-    reponses["Respect des consignes"] = st.radio("Tu préfères :", ["Suivre les consignes", "Inventer ta méthode", "Un peu des deux"])
-    reponses["Curiosité"] = st.radio("Te décris-tu comme quelqu’un de curieux(se) ?", ["Oui", "Non", "Parfois"])
+    reponses["Travail en groupe"] = st.radio(
+    "Préféres-tu travailler seul(e) ou en groupe ?",
+    ["Seul(e)", "En groupe", "Les deux"],
+    key="groupe"
+)
+
+reponses["Organisation"] = st.radio(
+    "Es-tu plutôt organisé(e) ou spontané(e) ?",
+    ["Organisé(e)", "Spontané(e)"],
+    key="organisation"
+)
+
+reponses["Face à l’erreur"] = st.radio(
+    "Quand tu fais une erreur, tu :",
+    ["Essaies de comprendre", "Te décourages", "Cherches de l’aide"],
+    key="erreur"
+)
+
+reponses["Respect des consignes"] = st.radio(
+    "Tu préfères :",
+    ["Suivre les consignes", "Inventer ta méthode", "Un peu des deux"],
+    key="consignes"
+)
+
+reponses["Curiosité"] = st.radio(
+    "Te décris-tu comme quelqu’un de curieux(se) ?",
+    ["Oui", "Non", "Parfois"],
+    key="curiosite"
+)
+
 
 # 🔹 PAGE 2 : COMPÉTENCES
 elif page == "💪 Compétences":
     st.header("💪 Tes compétences")
-    reponses["Expression préférée"] = st.radio("Es-tu plus à l’aise à l’écrit ou à l’oral ?", ["À l’écrit", "À l’oral", "Les deux"])
-    reponses["Expliquer une idée"] = st.radio("Sais-tu expliquer facilement une idée aux autres ?", ["Oui", "Non", "Parfois"])
-    reponses["Compétences numériques"] = st.radio("Es-tu à l’aise avec les outils numériques (ordinateur, tablette) ?", ["Oui", "Non", "Un peu"])
-    reponses["Résolution de problème"] = st.radio("Aimes-tu résoudre des problèmes complexes ?", ["Oui", "Non", "Parfois"])
+    reponses["Expression préférée"] = st.radio(
+    "Es-tu plus à l’aise à l’écrit ou à l’oral ?",
+    ["À l’écrit", "À l’oral", "Les deux"],
+    key="expression"
+)
+
+reponses["Expliquer une idée"] = st.radio(
+    "Sais-tu expliquer facilement une idée aux autres ?",
+    ["Oui", "Non", "Parfois"],
+    key="expliquer"
+)
+
+reponses["Compétences numériques"] = st.radio(
+    "Es-tu à l’aise avec les outils numériques (ordinateur, tablette) ?",
+    ["Oui", "Non", "Un peu"],
+    key="numerique"
+)
+
+reponses["Résolution de problème"] = st.radio(
+    "Aimes-tu résoudre des problèmes complexes ?",
+    ["Oui", "Non", "Parfois"],
+    key="probleme"
+)
+
 
 # 🔹 PAGE 3 : PRÉFÉRENCES
 elif page == "❤️ Préférences":
     st.header("❤️ Tes préférences")
-    reponses["Matière préférée"] = st.selectbox("Quelle matière préfères-tu à l’école ?", ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"])
-    reponses["Activité à la maison"] = st.radio("Chez toi, tu préfères :", ["Lire", "Dessiner", "Bricoler", "Jouer", "Écouter de la musique", "Autre"])
-    reponses["Créativité"] = st.radio("Aimes-tu les activités créatives (écrire, peindre, imaginer) ?", ["Oui", "Non", "Un peu"])
-    reponses["Répétition"] = st.radio("Tu t’ennuies vite quand une activité est répétitive ?", ["Oui", "Non", "Parfois"])
-    reponses["Film préféré"] = st.radio("Dans un film, tu préfères :", ["L’histoire", "Les images/effets", "Le message profond"])
+    reponses["Matière préférée"] = st.selectbox(
+    "Quelle matière préfères-tu à l’école ?",
+    ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"],
+    key="matiere"
+)
+
+reponses["Activité à la maison"] = st.radio(
+    "Chez toi, tu préfères :",
+    ["Lire", "Dessiner", "Bricoler", "Jouer", "Écouter de la musique", "Autre"],
+    key="activite"
+)
+
+reponses["Créativité"] = st.radio(
+    "Aimes-tu les activités créatives (écrire, peindre, imaginer) ?",
+    ["Oui", "Non", "Un peu"],
+    key="creativite"
+)
+
+reponses["Répétition"] = st.radio(
+    "Tu t’ennuies vite quand une activité est répétitive ?",
+    ["Oui", "Non", "Parfois"],
+    key="repetition"
+)
+
+reponses["Film préféré"] = st.radio(
+    "Dans un film, tu préfères :",
+    ["L’histoire", "Les images/effets", "Le message profond"],
+    key="film"
+)
+
 
 # 🔹 PAGE 4 : RÉSUMÉ + GPT
 elif page == "📊 Résumé":
