@@ -7,7 +7,7 @@ import base64
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Initialiser la session
+# Initialisation
 if "reponses" not in st.session_state:
     st.session_state["reponses"] = {}
 reponses = st.session_state["reponses"]
@@ -19,10 +19,7 @@ openai.api_key = "sk-...VOTRE_CLÉ_ICI..."
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
 st.title("🎓 Questionnaire d’Orientation Scolaire")
 
-# 📛 Nom de l'élève
-prenom = st.text_input("Prénom de l'élève :", key="prenom")
-
-# Navigation
+# Menu
 page = st.sidebar.selectbox("📂 Choisir une section", [
     "🧠 Personnalité", "💪 Compétences", "❤️ Préférences", "📊 Résumé"
 ])
@@ -30,86 +27,60 @@ page = st.sidebar.selectbox("📂 Choisir une section", [
 # 🔹 PAGE 1 : PERSONNALITÉ
 if page == "🧠 Personnalité":
     st.header("🧠 Profil de personnalité")
+
+    st.text_input("Prénom de l'élève :", key="prenom")  # ✅ Ne pas affecter manuellement à session_state
+
     st.session_state["reponses"]["Travail en groupe"] = st.radio(
-        "Préféres-tu travailler seul(e) ou en groupe ?",
-        ["Seul(e)", "En groupe", "Les deux"],
-        key="groupe"
-    )
+        "Préféres-tu travailler seul(e) ou en groupe ?", ["Seul(e)", "En groupe", "Les deux"], key="groupe")
+
     st.session_state["reponses"]["Organisation"] = st.radio(
-        "Es-tu plutôt organisé(e) ou spontané(e) ?",
-        ["Organisé(e)", "Spontané(e)"],
-        key="organisation"
-    )
+        "Es-tu plutôt organisé(e) ou spontané(e) ?", ["Organisé(e)", "Spontané(e)"], key="organisation")
+
     st.session_state["reponses"]["Face à l’erreur"] = st.radio(
-        "Quand tu fais une erreur, tu :",
-        ["Essaies de comprendre", "Te décourages", "Cherches de l’aide"],
-        key="erreur"
-    )
+        "Quand tu fais une erreur, tu :", ["Essaies de comprendre", "Te décourages", "Cherches de l’aide"], key="erreur")
+
     st.session_state["reponses"]["Respect des consignes"] = st.radio(
-        "Tu préfères :",
-        ["Suivre les consignes", "Inventer ta méthode", "Un peu des deux"],
-        key="consignes"
-    )
+        "Tu préfères :", ["Suivre les consignes", "Inventer ta méthode", "Un peu des deux"], key="consignes")
+
     st.session_state["reponses"]["Curiosité"] = st.radio(
-        "Te décris-tu comme quelqu’un de curieux(se) ?",
-        ["Oui", "Non", "Parfois"],
-        key="curiosite"
-    )
+        "Te décris-tu comme quelqu’un de curieux(se) ?", ["Oui", "Non", "Parfois"], key="curiosite")
 
 # 🔹 PAGE 2 : COMPÉTENCES
 elif page == "💪 Compétences":
     st.header("💪 Tes compétences")
+
     st.session_state["reponses"]["Expression préférée"] = st.radio(
-        "Es-tu plus à l’aise à l’écrit ou à l’oral ?",
-        ["À l’écrit", "À l’oral", "Les deux"],
-        key="expression"
-    )
+        "Es-tu plus à l’aise à l’écrit ou à l’oral ?", ["À l’écrit", "À l’oral", "Les deux"], key="expression")
+
     st.session_state["reponses"]["Expliquer une idée"] = st.radio(
-        "Sais-tu expliquer facilement une idée aux autres ?",
-        ["Oui", "Non", "Parfois"],
-        key="expliquer"
-    )
+        "Sais-tu expliquer facilement une idée aux autres ?", ["Oui", "Non", "Parfois"], key="expliquer")
+
     st.session_state["reponses"]["Compétences numériques"] = st.radio(
-        "Es-tu à l’aise avec les outils numériques (ordinateur, tablette) ?",
-        ["Oui", "Non", "Un peu"],
-        key="numerique"
-    )
+        "Es-tu à l’aise avec les outils numériques ?", ["Oui", "Non", "Un peu"], key="numerique")
+
     st.session_state["reponses"]["Résolution de problème"] = st.radio(
-        "Aimes-tu résoudre des problèmes complexes ?",
-        ["Oui", "Non", "Parfois"],
-        key="probleme"
-    )
+        "Aimes-tu résoudre des problèmes complexes ?", ["Oui", "Non", "Parfois"], key="probleme")
 
 # 🔹 PAGE 3 : PRÉFÉRENCES
 elif page == "❤️ Préférences":
     st.header("❤️ Tes préférences")
-    st.session_state["reponses"]["Matière préférée"] = st.selectbox(
-        "Quelle matière préfères-tu à l’école ?",
-        ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"],
-        key="matiere"
-    )
-    st.session_state["reponses"]["Activité à la maison"] = st.radio(
-        "Chez toi, tu préfères :",
-        ["Lire", "Dessiner", "Bricoler", "Jouer", "Écouter de la musique", "Autre"],
-        key="activite"
-    )
-    st.session_state["reponses"]["Créativité"] = st.radio(
-        "Aimes-tu les activités créatives (écrire, peindre, imaginer) ?",
-        ["Oui", "Non", "Un peu"],
-        key="creativite"
-    )
-    st.session_state["reponses"]["Répétition"] = st.radio(
-        "Tu t’ennuies vite quand une activité est répétitive ?",
-        ["Oui", "Non", "Parfois"],
-        key="repetition"
-    )
-    st.session_state["reponses"]["Film préféré"] = st.radio(
-        "Dans un film, tu préfères :",
-        ["L’histoire", "Les images/effets", "Le message profond"],
-        key="film"
-    )
 
-# 🔹 PAGE 4 : RÉSUMÉ + GPT
+    st.session_state["reponses"]["Matière préférée"] = st.selectbox(
+        "Quelle matière préfères-tu à l’école ?", ["Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"], key="matiere")
+
+    st.session_state["reponses"]["Activité à la maison"] = st.radio(
+        "Chez toi, tu préfères :", ["Lire", "Dessiner", "Bricoler", "Jouer", "Écouter de la musique", "Autre"], key="activite")
+
+    st.session_state["reponses"]["Créativité"] = st.radio(
+        "Aimes-tu les activités créatives ?", ["Oui", "Non", "Un peu"], key="creativite")
+
+    st.session_state["reponses"]["Répétition"] = st.radio(
+        "Tu t’ennuies vite quand une activité est répétitive ?", ["Oui", "Non", "Parfois"], key="repetition")
+
+    st.session_state["reponses"]["Film préféré"] = st.radio(
+        "Dans un film, tu préfères :", ["L’histoire", "Les images/effets", "Le message profond"], key="film")
+
+# 🔹 PAGE 4 : RÉSUMÉ
 elif page == "📊 Résumé":
     st.header("📊 Résumé de tes réponses")
 
@@ -154,14 +125,13 @@ Donne ensuite :
                     st.success("🎯 Résultat")
                     st.markdown(result_text)
 
-                    # Extraction des scores
+                    # 🔢 Graphe
                     scores = {}
                     for line in result_text.splitlines():
-                        if ":" in line and any(key in line.lower() for key in ["logique", "créativité", "communication", "curiosité", "artistique"]):
+                        if ":" in line and any(k in line.lower() for k in ["logique", "créativité", "communication", "curiosité", "artistique"]):
                             key, val = line.split(":")
-                            key = key.strip().capitalize()
                             try:
-                                scores[key] = float(val.strip().replace("/10", "").replace(",", "."))
+                                scores[key.strip().capitalize()] = float(val.strip().replace("/10", "").replace(",", "."))
                             except:
                                 pass
 
@@ -169,7 +139,7 @@ Donne ensuite :
                         st.markdown("### 📊 Visualisation du profil")
                         show_radar_chart(scores)
 
-                    # PDF
+                    # 🧾 PDF
                     pdf_bytes = generate_pdf(reponses, result_text)
                     b64 = base64.b64encode(pdf_bytes).decode()
                     href = f'<a href="data:application/octet-stream;base64,{b64}" download="orientation_resultat.pdf">📄 Télécharger le PDF</a>'
@@ -178,14 +148,13 @@ Donne ensuite :
                 except Exception as e:
                     st.error("❌ Erreur : " + str(e))
     else:
-        st.warning("⚠️ Tu n’as encore rempli aucune réponse. Commence par la première section.")
+        st.warning("⚠️ Tu n’as encore rempli aucune réponse.")
 
-# 📄 Génération PDF
+# Fonctions utilitaires
 def generate_pdf(responses_dict, result_text):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    pdf.set_text_color(40, 40, 40)
     pdf.multi_cell(0, 10, "Résultat d'Orientation Scolaire", align='C')
     pdf.ln(5)
     for question, answer in responses_dict.items():
@@ -199,11 +168,9 @@ def generate_pdf(responses_dict, result_text):
     result = result_text.encode("latin-1", "ignore").decode("latin-1")
     pdf.multi_cell(0, 10, result)
     buffer = BytesIO()
-    pdf_bytes = pdf.output(dest='S').encode("latin-1")
-    buffer.write(pdf_bytes)
+    buffer.write(pdf.output(dest='S').encode("latin-1"))
     return buffer.getvalue()
 
-# 📊 Graphe radar
 def show_radar_chart(scores):
     labels = list(scores.keys())
     values = list(scores.values())
