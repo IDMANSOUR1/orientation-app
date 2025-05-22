@@ -127,6 +127,8 @@ reponses["Film préféré"] = st.radio(
 # 🔹 PAGE 4 : RÉSUMÉ + GPT
 elif page == "📊 Résumé":
     st.header("📊 Résumé de tes réponses")
+    reponses = st.session_state.get("reponses", {})
+
     if reponses:
         for question, reponse in reponses.items():
             st.write(f"**{question}** : {reponse}")
