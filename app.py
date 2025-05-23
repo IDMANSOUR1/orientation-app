@@ -98,7 +98,7 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
 """
 
                 # 👇 UTILISATION CORRECTE DU SDK v1
-                response = client.chat.completions.create(
+                 response = client.chat.completions.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.7
