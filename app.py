@@ -85,13 +85,18 @@ elif page == "📊 Résumé":
                 for q, r in reponses.items():
                     prompt += f"- {q} : {r}\n"
                 prompt += """
-Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte), une justification et un score sur 10 pour :
-- Logique
-- Créativité
-- Communication
-- Curiosité scientifique
-- Expression artistique
-"""
+Analyse attendue :
+1. 🔍 Orientation recommandée (scientifique, littéraire ou mixte) + courte justification
+2. 📊 Évaluation sur 10 de :
+   - Logique
+   - Créativité
+   - Communication
+   - Curiosité scientifique
+   - Expression artistique
+3. 💡 Un conseil personnalisé pour mieux se connaître ou s’améliorer
+4. ✨ Une idée de métier ou domaine à explorer (facultatif)
+
+Sois synthétique, clair, et bienveillant."""
 
                 response = client.chat.completions.create(
                     model="gpt-3.5-turbo",
