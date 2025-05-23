@@ -12,7 +12,7 @@ from openai import OpenAI
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
 st.title("🎓 Questionnaire d’Orientation Scolaire")
 
-# Clé API (à ajouter dans Secrets sur Streamlit Cloud)
+# Clé API
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Navigation
@@ -20,7 +20,7 @@ page = st.sidebar.selectbox("📂 Choisir une section", [
     "🧠 Personnalité", "💪 Compétences", "❤️ Préférences", "📊 Résumé"
 ])
 
-# Fonction générique pour questions persistantes
+# Fonctions questions persistantes
 def question_radio(label, options, key):
     valeur = st.session_state.get(key)
     index = options.index(valeur) if valeur in options else 0
@@ -35,7 +35,7 @@ def question_selectbox(label, options, key):
     if choix != options[0]:
         st.session_state[key] = choix
 
-# ========== SECTION 1 ==========
+# 🔹 PAGE 1 : Personnalité
 if page == "🧠 Personnalité":
     st.header("🧠 Profil de personnalité")
     st.text_input("Prénom de l'élève :", key="prenom")
@@ -46,7 +46,7 @@ if page == "🧠 Personnalité":
     question_radio("Tu préfères :", ["-- Sélectionne --", "Suivre les consignes", "Inventer ta méthode", "Un peu des deux"], "consignes")
     question_radio("Te décris-tu comme quelqu’un de curieux(se) ?", ["-- Sélectionne --", "Oui", "Non", "Parfois"], "curiosite")
 
-# ========== SECTION 2 ==========
+# 🔹 PAGE 2 : Compétences
 elif page == "💪 Compétences":
     st.header("💪 Tes compétences")
     question_radio("Es-tu plus à l’aise à l’écrit ou à l’oral ?", ["-- Sélectionne --", "À l’écrit", "À l’oral", "Les deux"], "expression")
@@ -54,7 +54,7 @@ elif page == "💪 Compétences":
     question_radio("Es-tu à l’aise avec les outils numériques ?", ["-- Sélectionne --", "Oui", "Non", "Un peu"], "numerique")
     question_radio("Aimes-tu résoudre des problèmes complexes ?", ["-- Sélectionne --", "Oui", "Non", "Parfois"], "probleme")
 
-# ========== SECTION 3 ==========
+# 🔹 PAGE 3 : Préférences
 elif page == "❤️ Préférences":
     st.header("❤️ Tes préférences")
     question_selectbox("Quelle matière préfères-tu à l’école ?", ["-- Sélectionne --", "Maths", "Français", "SVT", "Histoire", "Physique", "Langues", "Arts", "Sport", "Autre"], "matiere")
@@ -63,7 +63,7 @@ elif page == "❤️ Préférences":
     question_radio("Tu t’ennuies vite quand une activité est répétitive ?", ["-- Sélectionne --", "Oui", "Non", "Parfois"], "repetition")
     question_radio("Dans un film, tu préfères :", ["-- Sélectionne --", "L’histoire", "Les images/effets", "Le message profond"], "film")
 
-# ========== SECTION 4 ==========
+# 🔹 PAGE 4 : Résumé et Analyse
 elif page == "📊 Résumé":
     st.header("📊 Résumé de tes réponses")
     prenom = st.session_state.get("prenom", "")
@@ -81,7 +81,8 @@ elif page == "📊 Résumé":
     if st.button("🔎 Analyser mon profil"):
         with st.spinner("Analyse en cours..."):
             try:
-                prompt = f"Prénom de l'élève : {prenom}\n\nVoici ses réponses :\n"
+                # 🧠 Construction du prompt
+                prompt = f"Prénom de l'élève : {prenom}\nVoici ses réponses :\n"
                 for q, r in reponses.items():
                     prompt += f"- {q} : {r}\n"
                 prompt += """
@@ -98,14 +99,15 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.7
                 )
+
                 result_text = response.choices[0].message.content
                 st.success("🎯 Résultat")
                 st.markdown(result_text)
 
-                # Extraction scores depuis texte GPT
+                # 📊 Extraction des scores
                 scores = {}
                 for line in result_text.splitlines():
-                    match = re.search(r"^(.*?)\s*:\s*.*Score\s*:\s*(\d+(?:[\.,]\d+)?)/10", line)
+                    match = re.search(r"([\w\séèàçïÉÊÈ]+)\s*:\s*(\d+(?:[\.,]\d+)?)\s*/\s*10", line)
                     if match:
                         key = match.group(1).strip().capitalize()
                         val = match.group(2).replace(",", ".")
@@ -114,7 +116,9 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
                         except:
                             pass
 
-                # Graphe radar
+                st.write("✅ Scores extraits :", scores)
+
+                # ✅ Graphe radar
                 if scores:
                     st.markdown("### 📊 Visualisation du profil")
                     labels = list(scores.keys())
@@ -130,22 +134,17 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
                     ax.set_xticklabels(labels)
                     st.pyplot(fig)
 
-                # PDF génération
+                # 📄 Génération PDF
                 pdf = FPDF()
                 pdf.add_page()
                 pdf.set_font("Arial", size=12)
                 pdf.multi_cell(0, 10, f"Orientation scolaire pour : {prenom}")
                 for q, r in reponses.items():
-                    q = q.encode("latin-1", "ignore").decode("latin-1")
-                    r = r.encode("latin-1", "ignore").decode("latin-1")
                     pdf.multi_cell(0, 10, f"{q} : {r}")
-                result_clean = result_text.encode("latin-1", "ignore").decode("latin-1")
                 pdf.multi_cell(0, 10, "\nRésultat IA :")
-                pdf.multi_cell(0, 10, result_clean)
-
+                pdf.multi_cell(0, 10, result_text.encode('latin-1', 'ignore').decode('latin-1'))
                 buffer = BytesIO()
-                pdf_bytes = pdf.output(dest='S').encode("latin-1")
-                buffer.write(pdf_bytes)
+                buffer.write(pdf.output(dest='S').encode("latin-1"))
                 b64 = base64.b64encode(buffer.getvalue()).decode()
                 href = f'<a href="data:application/octet-stream;base64,{b64}" download="orientation_resultat.pdf">📄 Télécharger le PDF</a>'
                 st.markdown(href, unsafe_allow_html=True)
