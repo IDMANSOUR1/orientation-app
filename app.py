@@ -13,7 +13,7 @@ st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
 st.title("🎓 Questionnaire d’Orientation Scolaire")
 
 # Clé API (à ajouter dans Secrets Streamlit Cloud)
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Navigation
 page = st.sidebar.selectbox("📂 Choisir une section", [
