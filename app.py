@@ -108,29 +108,34 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
                 st.markdown(result_text)
 
                 # Graphe radar
-                scores = {}
-                for line in result_text.splitlines():
-                    if ":" in line and any(k in line.lower() for k in ["logique", "créativité", "communication", "curiosité", "artistique"]):
-                        key, val = line.split(":")
-                        try:
-                            scores[key.strip().capitalize()] = float(val.strip().replace("/10", "").replace(",", "."))
-                        except:
-                            pass
+                import re
 
-                if scores:
-                    st.markdown("### 📊 Visualisation du profil")
-                    labels = list(scores.keys())
-                    values = list(scores.values())
-                    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
-                    values += values[:1]
-                    angles += angles[:1]
-                    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
-                    ax.plot(angles, values, color='blue', linewidth=2)
-                    ax.fill(angles, values, color='skyblue', alpha=0.4)
-                    ax.set_yticklabels([])
-                    ax.set_xticks(angles[:-1])
-                    ax.set_xticklabels(labels)
-                    st.pyplot(fig)
+scores = {}
+for line in result_text.splitlines():
+    match = re.search(r"^(.*?)\s*:\s*.*Score\s*:\s*(\d+(?:[\.,]\d+)?)/10", line)
+    if match:
+        key = match.group(1).strip().capitalize()
+        val = match.group(2).replace(",", ".")
+        try:
+            scores[key] = float(val)
+        except:
+            pass
+
+if scores:
+    st.markdown("### 📊 Visualisation du profil")
+    labels = list(scores.keys())
+    values = list(scores.values())
+    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+    values += values[:1]
+    angles += angles[:1]
+    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    ax.plot(angles, values, color='blue', linewidth=2)
+    ax.fill(angles, values, color='skyblue', alpha=0.4)
+    ax.set_yticklabels([])
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(labels)
+    st.pyplot(fig)
+
 
                 # PDF
                 pdf = FPDF()
