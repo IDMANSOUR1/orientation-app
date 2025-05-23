@@ -1,11 +1,12 @@
 import streamlit as st
-import openai
 import os
 import base64
 from io import BytesIO
 from fpdf import FPDF
 import numpy as np
 import matplotlib.pyplot as plt
+from openai import OpenAI
+import os
 
 # Configuration
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
@@ -96,11 +97,17 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
 - Expression artistique
 """
 
-                response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=0.7
-                )
+                from openai import OpenAI
+client = OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": prompt}],
+    temperature=0.7
+)
+
+result_text = response.choices[0].message.content
+
 
                 result_text = response.choices[0].message["content"]
                 st.success("🎯 Résultat")
