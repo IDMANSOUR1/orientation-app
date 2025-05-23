@@ -97,21 +97,15 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
 - Expression artistique
 """
 
-                from openai import OpenAI
-client = OpenAI()
-
-response = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": prompt}],
-    temperature=0.7
-)
-
-result_text = response.choices[0].message.content
-
-
-                result_text = response.choices[0].message["content"]
-                st.success("🎯 Résultat")
-                st.markdown(result_text)
+                # 👇 UTILISATION CORRECTE DU SDK v1
+                response = client.chat.completions.create(
+                 model="gpt-3.5-turbo",
+                 messages=[{"role": "user", "content": prompt}],
+                 temperature=0.7
+            )
+                 result_text = response.choices[0].message.content
+                  st.success("🎯 Résultat")
+                  st.markdown(result_text)
 
                 # Graphe radar
                 scores = {}
