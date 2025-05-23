@@ -93,7 +93,7 @@ else:
             # ... ton code actuel pour générer le prompt et appeler l’IA ...
 
         
-        with st.spinner("Analyse en cours..."):
+       
             try:
                 prompt = f"Prénom de l'élève : {prenom}\n\nVoici ses réponses :\n"
                 for q, r in reponses.items():
