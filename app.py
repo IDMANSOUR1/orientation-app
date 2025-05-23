@@ -142,7 +142,7 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
                 pdf.multi_cell(0, 10, "\nRésultat IA :")
                 pdf.multi_cell(0, 10, result_text)
                 buffer = BytesIO()
-                buffer.write(pdf.output(dest='S').encode("utf-8"))
+                buffer.write(pdf.output(dest='S').encode("utf-8", "ignore"))
                 b64 = base64.b64encode(buffer.getvalue()).decode()
                 href = f'<a href="data:application/octet-stream;base64,{b64}" download="orientation_resultat.pdf">📄 Télécharger le PDF</a>'
                 st.markdown(href, unsafe_allow_html=True)
