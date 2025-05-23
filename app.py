@@ -108,8 +108,7 @@ Analyse ces réponses. Donne une orientation (scientifique, littéraire ou mixte
                 st.markdown(result_text)
 
                 # Graphe radar
-                import re
-
+ import re
 scores = {}
 for line in result_text.splitlines():
     match = re.search(r"^(.*?)\s*:\s*.*Score\s*:\s*(\d+(?:[\.,]\d+)?)/10", line)
@@ -120,6 +119,8 @@ for line in result_text.splitlines():
             scores[key] = float(val)
         except:
             pass
+
+
 
 if scores:
     st.markdown("### 📊 Visualisation du profil")
