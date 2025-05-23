@@ -78,22 +78,19 @@ elif page == "📊 Résumé":
     for question, reponse in reponses.items():
         st.write(f"**{question}** : {reponse}")
 
-questions_obligatoires = [
-    "groupe", "organisation", "erreur", "consignes", "curiosite",
-    "expression", "expliquer", "numerique", "probleme",
-    "matiere", "activite", "creativite", "repetition", "film"
-]
-manquantes = [q for q in questions_obligatoires if st.session_state.get(q, "-- Sélectionne --") == "-- Sélectionne --"]
+      questions_obligatoires = [
+            "groupe", "organisation", "erreur", "consignes", "curiosite",
+            "expression", "expliquer", "numerique", "probleme",
+            "matiere", "activite", "creativite", "repetition", "film"
+      ]
+      manquantes = [q for q in questions_obligatoires if st.session_state.get(q, "-- Sélectionne --") == "-- Sélectionne --"]
 
-if manquantes:
-    st.warning("⚠️ Merci de répondre à toutes les questions avant de lancer l’analyse.")
-else:
-    if st.button("🔎 Analyser mon profil"):
-        with st.spinner("Analyse en cours..."):
-            # ... ton code actuel pour générer le prompt et appeler l’IA ...
+      if manquantes:
+             st.warning("⚠️ Merci de répondre à toutes les questions avant de lancer l’analyse.")
+      else:
+             if st.button("🔎 Analyser mon profil"):
+                 with st.spinner("Analyse en cours..."):
 
-        
-       
             try:
                 prompt = f"Prénom de l'élève : {prenom}\n\nVoici ses réponses :\n"
                 for q, r in reponses.items():
