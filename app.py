@@ -145,11 +145,15 @@ Réponds en JSON :
 
                 st.session_state["profil"] = result_json['orientation']
 
+            except Exception as e:
+                st.error(f"❌ Une erreur est survenue : {str(e)}")
+
 if "profil" in st.session_state:
     if st.button("➕ Générer des questions ciblées (Q16–Q30)"):
         profil = st.session_state["profil"]
         with st.spinner(f"Génération de questions pour le profil {profil.upper()}..."):
-            adaptation_prompt = f"""
+            try:
+                adaptation_prompt = f"""
 Tu es un créateur de tests d’orientation. En te basant sur le profil suivant : {profil}, génère 15 nouvelles questions ciblées Q16 à Q30. Chaque question doit être implicite, contextuelle, et liée aux compétences de ce profil.
 Réponds sous ce format :
 - Q16 : [question]
@@ -157,10 +161,12 @@ Réponds sous ce format :
 ...
 - Q30 : [question]
 """
-            followup = client.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": adaptation_prompt}],
-                temperature=0.7
-            )
-            st.markdown("### 🎯 Questions ciblées :")
-            st.markdown(followup.choices[0].message.content)
+                followup = client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[{"role": "user", "content": adaptation_prompt}],
+                    temperature=0.7
+                )
+                st.markdown("### 🎯 Questions ciblées :")
+                st.markdown(followup.choices[0].message.content)
+            except Exception as e:
+                st.error(f"❌ Une erreur est survenue lors de la génération des questions : {str(e)}")
