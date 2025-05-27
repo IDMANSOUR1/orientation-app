@@ -13,7 +13,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 st.header("🧠 Réponds aux 15 situations")
 prenom = st.text_input("Prénom de l'élève :", key="prenom")
 
-# Questions et options spécifiques
+# Questions implicites (Q1 à Q15)
 questions = {
     "Q1": ("Ton professeur te donne un exposé sur un sujet inconnu. Tu as 3 jours. Tu :", [
         "Organises tes idées en plan avant de chercher",
@@ -143,11 +143,13 @@ Réponds en JSON :
                 st.markdown("**📝 Résumé :**")
                 st.markdown(f"> {result_json['resume']}")
 
-                if st.button("➕ Générer des questions ciblées (Q16–Q30)"):
-                    profil = result_json['orientation']
-                    st.info(f"Questions adaptées pour un profil {profil.upper()} en cours de génération...")
+                st.session_state["profil"] = result_json['orientation']
 
-                    adaptation_prompt = f"""
+if "profil" in st.session_state:
+    if st.button("➕ Générer des questions ciblées (Q16–Q30)"):
+        profil = st.session_state["profil"]
+        with st.spinner(f"Génération de questions pour le profil {profil.upper()}..."):
+            adaptation_prompt = f"""
 Tu es un créateur de tests d’orientation. En te basant sur le profil suivant : {profil}, génère 15 nouvelles questions ciblées Q16 à Q30. Chaque question doit être implicite, contextuelle, et liée aux compétences de ce profil.
 Réponds sous ce format :
 - Q16 : [question]
@@ -155,13 +157,10 @@ Réponds sous ce format :
 ...
 - Q30 : [question]
 """
-                    followup = client.chat.completions.create(
-                        model="gpt-4",
-                        messages=[{"role": "user", "content": adaptation_prompt}],
-                        temperature=0.7
-                    )
-                    st.markdown("### 🎯 Questions ciblées :")
-                    st.markdown(followup.choices[0].message.content)
-
-            except Exception as e:
-                st.error("Erreur : " + str(e))
+            followup = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": adaptation_prompt}],
+                temperature=0.7
+            )
+            st.markdown("### 🎯 Questions ciblées :")
+            st.markdown(followup.choices[0].message.content)
