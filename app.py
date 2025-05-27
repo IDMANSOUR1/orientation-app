@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 from openai import OpenAI
+import json
 
 # Configuration
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
@@ -132,9 +133,35 @@ Réponds en JSON :
                     messages=[{"role": "user", "content": prompt}],
                     temperature=0.7
                 )
-                result_text = response.choices[0].message.content
+                result_json = json.loads(response.choices[0].message.content)
+
                 st.success("🎯 Résultat")
-                st.markdown(result_text)
+                st.markdown(f"**🧑 Prénom :** {prenom}")
+                st.markdown(f"**📚 Orientation recommandée :** `{result_json['orientation']}`")
+                st.markdown(f"**🧭 Tendances cognitives :** {', '.join(result_json['tendances'])}")
+                st.markdown(f"**📊 Niveau de clarté :** {result_json['niveau_certitude']}")
+                st.markdown("**📝 Résumé :**")
+                st.markdown(f"> {result_json['resume']}")
+
+                if st.button("➕ Générer des questions ciblées (Q16–Q30)"):
+                    profil = result_json['orientation']
+                    st.info(f"Questions adaptées pour un profil {profil.upper()} en cours de génération...")
+
+                    adaptation_prompt = f"""
+Tu es un créateur de tests d’orientation. En te basant sur le profil suivant : {profil}, génère 15 nouvelles questions ciblées Q16 à Q30. Chaque question doit être implicite, contextuelle, et liée aux compétences de ce profil.
+Réponds sous ce format :
+- Q16 : [question]
+- Q17 : [question]
+...
+- Q30 : [question]
+"""
+                    followup = client.chat.completions.create(
+                        model="gpt-4",
+                        messages=[{"role": "user", "content": adaptation_prompt}],
+                        temperature=0.7
+                    )
+                    st.markdown("### 🎯 Questions ciblées :")
+                    st.markdown(followup.choices[0].message.content)
 
             except Exception as e:
                 st.error("Erreur : " + str(e))
