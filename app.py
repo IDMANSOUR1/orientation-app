@@ -141,7 +141,7 @@ Réponds en JSON :
                 st.markdown(f"**🧭 Tendances cognitives :** {', '.join(result_json['tendances'])}")
                 st.markdown(f"**📊 Niveau de clarté :** {result_json['niveau_certitude']}")
                 st.markdown("**📝 Résumé :**")
-                st.markdown(f"> {result_json['resume']}")
+                st.markdown(f"> {result_json['resume']}" )
 
                 st.session_state["profil"] = result_json['orientation']
 
@@ -154,7 +154,8 @@ if "profil" in st.session_state:
         with st.spinner(f"Génération de questions pour le profil {profil.upper()}..."):
             try:
                 adaptation_prompt = f"""
-Tu es un créateur de tests d’orientation. En te basant sur le profil suivant : {profil}, génère 15 nouvelles questions ciblées Q16 à Q30. Chaque question doit être implicite, contextuelle, et liée aux compétences de ce profil.
+Tu es un pédagogue expert en orientation scolaire pour collégiens. Basé sur le profil {profil}, génère 15 nouvelles questions (Q16 à Q30), chacune ancrée dans une situation réelle ou un dilemme implicite, permettant d’évaluer des dimensions cognitives et émotionnelles profondes (logique, expression, créativité, rigueur, raisonnement, engagement...).
+Ne crée pas de questions banales ou génériques. Chaque question doit obliger l’élève à se positionner subtilement et révéler sa manière de penser ou agir.
 Réponds sous ce format :
 - Q16 : [question]
 - Q17 : [question]
