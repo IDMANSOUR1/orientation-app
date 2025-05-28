@@ -191,11 +191,9 @@ elif st.session_state["etape"] == "bloc2":
 
 # === Bloc 3 ===
 elif st.session_state["etape"] == "bloc3":
-    st.header("🔍 Étape 3 : Réagis à une situation ")
+    st.header("🔍 Étape 3 : Réagis à une situation")
 
     profil = st.session_state["orientation"]
-    #st.markdown(f"**📚 Profil prédit :** {profil}")
-    #st.markdown(f"**📝 Synthèse Bloc 2 :** {st.session_state['synthese_bloc2']}")
 
     try:
         prompt_situation = f"""
@@ -211,20 +209,7 @@ Génère une **situation complexe** adaptée à un jeune élève marocain (nivea
 
 🧩 Format attendu :
 1. Une situation concrète, réaliste, et engageante, en 4 à 6 lignes maximum.
-   - Elle peut être scolaire ou non (vie quotidienne, projet, discussion…)
-   - Elle doit intégrer au moins 2 dimensions cognitives ou expressives
 2. Ensuite, 3 **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
-
-📝 Style :
-- Langage accessible, direct, sans vocabulaire académique complexe.
-- Aucun diagnostic. Ne conclus rien.
-- Ne donne pas de réponses, uniquement la **situation + les questions**.
-
-Exemples :
-- Profil scientifique : situation où il faut résoudre un problème ou organiser un projet concret.
-- Profil littéraire : situation où il faut argumenter, raconter ou interpréter un événement.
-
-Génère maintenant la situation et les questions.
 """
 
         if "situation_bloc3" not in st.session_state:
@@ -234,11 +219,9 @@ Génère maintenant la situation et les questions.
                 temperature=0.7
             )
             st.session_state["situation_bloc3"] = response.choices[0].message.content
+
         situation = st.session_state["situation_bloc3"]
-
-
-
-        st.markdown("### 📘 Situation ")
+        st.markdown("### 📘 Situation")
         st.markdown(situation)
 
         rep1 = st.text_area("Réponse 1")
@@ -255,7 +238,7 @@ Réponse 1 : {rep1}
 Réponse 2 : {rep2}
 Réponse 3 : {rep3}
 
-Analyse les réponses pour produire un BILAN FINAL clair, structuré, sans discours long.
+Analyse-les pour produire un BILAN FINAL clair, structuré, sans discours long.
 
 🟢 Format attendu (en JSON uniquement, sans introduction) :
 {{
@@ -271,26 +254,26 @@ Analyse les réponses pour produire un BILAN FINAL clair, structuré, sans disco
 ✅ Sois concis, direct et motivant.
 """
 
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt_final}],
+                temperature=0.7
+            )
+            result_json = json.loads(response.choices[0].message.content)
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt_final}],
-            temperature=0.7
-        )
-        result_json = json.loads(response.choices[0].message.content)
+            st.markdown("## ✅ Résultat final")
+            st.subheader(f"🎓 Ton profil : **{result_json['profil'].capitalize()}**")
 
-        st.markdown("## ✅ Résultat final")
-        st.subheader(f"🎓 Ton profil : **{result_json['profil'].capitalize()}**")
-        st.markdown("### 💡 Tes points forts")
+            st.markdown("### 💡 Tes points forts")
             for point in result_json["points_forts"]:
                 st.markdown(f"- {point}")
-                st.markdown("### 🧭 Pistes d’orientation proposées")
+
+            st.markdown("### 🧭 Pistes d’orientation proposées")
             for piste in result_json["pistes"]:
                 st.markdown(f"- {piste}")
-        st.markdown("### 💬 Conseil personnalisé")
-        st.info(result_json["conseil"])
 
+            st.markdown("### 💬 Conseil personnalisé")
+            st.info(result_json["conseil"])
 
     except Exception as e:
         st.error(f"Erreur lors de la génération de la situation complexe : {str(e)}")
