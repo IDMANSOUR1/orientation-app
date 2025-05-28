@@ -279,7 +279,16 @@ Analyse les réponses pour produire un BILAN FINAL clair, structuré, sans disco
             ).choices[0].message.content
 
             st.markdown("## ✅ Résultat final")
-            st.markdown(final)
+            st.subheader(f"🎓 Ton profil : **{result_json['profil'].capitalize()}**")
+            st.markdown("### 💡 Tes points forts")
+            for point in result_json["points_forts"]:
+                st.markdown(f"- {point}")
+                st.markdown("### 🧭 Pistes d’orientation proposées")
+            for piste in result_json["pistes"]:
+                st.markdown(f"- {piste}")
+            st.markdown("### 💬 Conseil personnalisé")
+            st.info(result_json["conseil"])
+
 
     except Exception as e:
         st.error(f"Erreur lors de la génération de la situation complexe : {str(e)}")
