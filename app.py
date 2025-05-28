@@ -62,8 +62,8 @@ elif st.session_state["etape"] == "bloc2":
     st.header("📘 Bloc 2 : Questions ciblées")
 
     profil = st.session_state["orientation"]
-    st.success(f"📚 Profil détecté : {profil}")
-    st.markdown(f"**Résumé Bloc 1 :** _{st.session_state['resume']}_")
+    #st.success(f"📚 Profil détecté : {profil}")
+    #st.markdown(f"**Résumé Bloc 1 :** _{st.session_state['resume']}_")
 
     questions = []
     if profil == "scientifique":
@@ -107,8 +107,8 @@ elif st.session_state["etape"] == "bloc3":
     st.header("🔍 Bloc 3 : Confirmation par situation complexe")
 
     profil = st.session_state["orientation"]
-    st.markdown(f"**📚 Profil prédit :** {profil}")
-    st.markdown(f"**📝 Synthèse Bloc 2 :** {st.session_state['synthese_bloc2']}")
+    #st.markdown(f"**📚 Profil prédit :** {profil}")
+    #st.markdown(f"**📝 Synthèse Bloc 2 :** {st.session_state['synthese_bloc2']}")
 
     try:
         prompt_situation = f"""
@@ -126,7 +126,7 @@ Génère une **situation complexe** adaptée à un jeune élève marocain (nivea
 1. Une situation concrète, réaliste, et engageante, en 4 à 6 lignes maximum.
    - Elle peut être scolaire ou non (vie quotidienne, projet, discussion…)
    - Elle doit intégrer au moins 2 dimensions cognitives ou expressives
-2. Ensuite, 3 à 5 **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
+2. Ensuite, 3 **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
 
 📝 Style :
 - Langage accessible, direct, sans vocabulaire académique complexe.
