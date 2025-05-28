@@ -190,7 +190,18 @@ elif st.session_state["etape"] == "bloc2":
                 for q, r in reponses_bloc2.items():
                     synthese_prompt += f"- {q} : {r}\n"
 
-                synthese_prompt += "Analyse le fonctionnement cognitif de l’élève et propose un conseil d’orientation adapté."
+                synthese_prompt += """Analyse le fonctionnement cognitif de l’élève et propose un conseil d’orientation adapté.Ta mission est de rédiger une **réponse brève, claire et motivante** qui :
+1. Indique explicitement à l'élève quel est son profil (ex: « Ton profil est plutôt scientifique… »)
+2. Met en valeur 2 ou 3 de ses forces principales (en lien avec les réponses)
+3. Suggère 2 à 3 pistes ou domaines adaptés à ce profil
+4. Termine par un conseil simple, personnalisé et encourageant
+
+⚠️ Format attendu :
+- 4 à 6 phrases max
+- Style fluide, chaleureux, sans jargon scolaire
+- Parle directement à l’élève (avec « tu » ou son prénom)
+
+Objectif : lui donner confiance, clarté et envie de s’investir dans les domaines proposés."""
 
                 completion = client.chat.completions.create(
                     model="gpt-4",
