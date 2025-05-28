@@ -168,6 +168,9 @@ elif st.session_state["etape"] == "bloc2":
         reponses_bloc2[qkey] = choix
 
     if st.button("➡️ Suivant (Analyse + Bloc 3)"):
+    if len(reponses_bloc2) < len(questions):
+        st.warning("Merci de répondre à toutes les questions.")
+    else:
         try:
             synthese_prompt = f"Profil : {profil}\nPrénom : {st.session_state['prenom_resultat']}\nRéponses Bloc 2 :\n"
             for q, r in reponses_bloc2.items():
