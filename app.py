@@ -16,7 +16,7 @@ if st.session_state["etape"] == "bloc1":
     st.header("🧠 Bloc 1 : Situations générales")
     prenom = st.text_input("Prénom de l'élève :", key="prenom")
 
-questions_bloc1 = {
+    questions_bloc1 = {
     "Q1": ("Ton professeur te donne un exposé à faire sur un sujet que tu ne connais pas du tout. Tu as 3 jours. Tu :", [
         "Organises les idées en plan avant de commencer à chercher",
         "Commences par écrire des phrases pour voir ce que tu en penses",
