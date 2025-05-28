@@ -13,7 +13,7 @@ if "etape" not in st.session_state:
 
 # === Bloc 1 ===
 if st.session_state["etape"] == "bloc1":
-    st.header("🧠 Bloc 1 : Situations générales")
+    st.header("✨ Étape 1 : Découvre comment tu réfléchis")
     prenom = st.text_input("Prénom de l'élève :", key="prenom")
 
     questions_bloc1 = {
@@ -124,7 +124,7 @@ if st.session_state["etape"] == "bloc1":
 
 # === Bloc 2 ===
 elif st.session_state["etape"] == "bloc2":
-    st.header("📘 Bloc 2 : Questions ciblées")
+    st.header("📘 Étape 2 : Approfondissons ton profil")
 
     profil = st.session_state["orientation"]
     #st.success(f"📚 Profil détecté : {profil}")
@@ -167,7 +167,7 @@ elif st.session_state["etape"] == "bloc2":
         choix = st.radio(question, options, key=qkey)
         reponses_bloc2[qkey] = choix
 
-    if st.button("➡️ Suivant (Analyse + Bloc 3)"):
+    if st.button("➡️ Suivant "):
      if len(reponses_bloc2) < len(questions):
         st.warning("Merci de répondre à toutes les questions.")
      else:
@@ -191,7 +191,7 @@ elif st.session_state["etape"] == "bloc2":
 
 # === Bloc 3 ===
 elif st.session_state["etape"] == "bloc3":
-    st.header("🔍 Bloc 3 : Confirmation par situation complexe")
+    st.header("🔍 Étape 3 : Réagis à une situation ")
 
     profil = st.session_state["orientation"]
     #st.markdown(f"**📚 Profil prédit :** {profil}")
@@ -242,13 +242,32 @@ Génère maintenant la situation et les questions.
         rep2 = st.text_area("Réponse 2")
         rep3 = st.text_area("Réponse 3")
 
-        if st.button("📍 Analyse finale et profil confirmé"):
-            prompt_final = f"""Voici les réponses à une situation complexe pour un élève au profil {profil} :
-1. {rep1}
-2. {rep2}
-3. {rep3}
+        if st.button("📍 Analyse "):
+            prompt_final = f"""
+Tu es un expert en orientation scolaire pour élèves de collège au Maroc.
 
-Analyse-les pour confirmer ou ajuster le profil (scientifique/littéraire/mixte) et donne une recommandation claire et motivante."""
+Voici les réponses d’un élève à une situation complexe (profil estimé : {profil}) :
+
+Réponse 1 : {rep1}
+Réponse 2 : {rep2}
+Réponse 3 : {rep3}
+
+Analyse les réponses pour produire un BILAN FINAL clair, structuré, sans discours long.
+
+🟢 Format attendu (en JSON uniquement, sans introduction) :
+{{
+  "profil": "...",
+  "points_forts": ["...", "...", "..."],
+  "pistes": ["...", "...", "..."],
+  "conseil": "..."
+}}
+
+❌ Ne donne aucune analyse longue.
+✅ Ne parle pas à la première personne.
+✅ Ne parle pas de 'je suis un modèle IA'.
+✅ Sois concis, direct et motivant.
+"""
+
 
             final = client.chat.completions.create(
                 model="gpt-4",
