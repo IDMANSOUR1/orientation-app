@@ -16,83 +16,84 @@ if st.session_state["etape"] == "bloc1":
     st.header("🧠 Bloc 1 : Situations générales")
     prenom = st.text_input("Prénom de l'élève :", key="prenom")
 
-    questions_bloc1 = {
-        "Q1": ("Tu dois faire un exposé. Tu :", [
-            "Organises tes idées en plan",
-            "Commences par écrire",
-            "Dessines une carte mentale"
-        ]),
-        "Q2": ("Un ami bloque sur un exercice. Tu :", [
-            "Réexplique la méthode",
-            "Reformules avec tes mots",
-            "Inventes une métaphore"
-        ]),
-        "Q3": ("Tu préfères :", [
-            "Correction structurée",
-            "Explication orale",
-            "Méthodes comparées"
-        ]),
-        "Q4": ("Tu choisis :", [
-            "Problème à solution unique",
-            "Rédaction libre",
-            "Projet créatif"
-        ]),
-        "Q5": ("Face à une question difficile, tu :", [
-            "Tentes ta chance",
-            "Attends d’être sûr",
-            "Notes pour plus tard"
-        ]),
-        "Q6": ("On dit : 'méthode originale mais lente'. Tu :", [
-            "Cherches logique",
-            "Es fier(e)",
-            "T'interroges sur ton style"
-        ]),
-        "Q7": ("Au CDI, tu :", [
-            "Cherches un tuto",
-            "Lis un blog ou vidéo d’analyse",
-            "Crées un projet"
-        ]),
-        "Q8": ("Tu es méthodique ?", [
-            "Oui, j’aime structurer",
-            "Non, idées spontanées",
-            "Les deux selon les cas"
-        ]),
-        "Q9": ("Sujet difficile. Tu :", [
-            "Fais un exercice",
-            "Relis ton cours",
-            "Discutes avec quelqu’un"
-        ]),
-        "Q10": ("Atelier libre. Tu choisis :", [
-            "Construire une maquette",
-            "Écrire une histoire",
-            "Résoudre des énigmes"
-        ]),
-        "Q11": ("Corriger un devoir. Tu regardes :", [
-            "Le raisonnement",
-            "La qualité d’écriture",
-            "L’originalité"
-        ]),
-        "Q12": ("En exposé, tu préfères :", [
-            "Rechercher et organiser",
-            "Écrire ou présenter",
-            "Créer le support"
-        ]),
-        "Q13": ("Consigne floue. Tu :", [
-            "Demande plus de détails",
-            "Proposes une idée originale",
-            "Improvises"
-        ]),
-        "Q14": ("Débat. Tu observes :", [
-            "Les arguments",
-            "La clarté",
-            "La surprise"
-        ]),
-        "Q15": ("Pour résumer un texte :", [
-            "Idées principales",
-            "Tes mots",
-            "Carte mentale"
-        ])
-    }
+questions_bloc1 = {
+    "Q1": ("Ton professeur te donne un exposé à faire sur un sujet que tu ne connais pas du tout. Tu as 3 jours. Tu :", [
+        "Organises les idées en plan avant de commencer à chercher",
+        "Commences par écrire des phrases pour voir ce que tu en penses",
+        "Dessines un schéma ou une carte mentale pour explorer le sujet"
+    ]),
+    "Q2": ("Un camarade bloque sur un exercice. Il te demande de l’aide. Tu :", [
+        "Réexplique la règle ou la méthode",
+        "Reformules le problème avec tes propres mots",
+        "Inventes une analogie ou une métaphore pour l’aider"
+    ]),
+    "Q3": ("En classe, ton professeur corrige un devoir en silence au tableau. Tu préfères :", [
+        "Que ce soit bien structuré, étape par étape",
+        "Que ce soit expliqué à voix haute avec des exemples",
+        "Qu’il donne plusieurs façons de résoudre pour comparer"
+    ]),
+    "Q4": ("Tu dois préparer un devoir noté. Tu as le choix :", [
+        "Un problème complexe avec une seule bonne solution",
+        "Une dissertation ou un texte à rédiger librement",
+        "Un projet créatif à construire ou présenter"
+    ]),
+    "Q5": ("Pendant un cours, ton prof pose une question difficile. Tu :", [
+        "Lances-toi, même si tu n’es pas sûr",
+        "Attends d’être vraiment certain(e) pour répondre",
+        "Préféres noter la question pour la revoir chez toi"
+    ]),
+    "Q6": ("Tu reçois un devoir corrigé avec cette remarque : 'Ta méthode n’était pas la plus rapide, mais elle est originale.' Tu te dis :", [
+        "Je vais chercher la méthode la plus logique la prochaine fois",
+        "Je suis fier(e), ça veut dire que j’ai réfléchi autrement",
+        "Je me demande si mon style d’approche est un atout ou une faiblesse"
+    ]),
+    "Q7": ("Tu as une heure de liberté dans un CDI avec Internet. Tu fais quoi ?", [
+        "Cherches un tuto sur un sujet qui te fascine (sciences, tech, etc.)",
+        "Lis un article, un blog, ou regardes une vidéo d’analyse",
+        "Dessines, écris ou prépares un projet personnel"
+    ]),
+    "Q8": ("Un adulte te dit : 'Tu es quelqu’un de très méthodique.' Tu penses :", [
+        "Oui, j’aime bien que tout soit structuré",
+        "Non, je préfère laisser venir les idées naturellement",
+        "Je suis un peu des deux, selon les moments"
+    ]),
+    "Q9": ("Un nouveau sujet te paraît difficile à comprendre. Tu préfères :", [
+        "Faire un exercice ou un exemple tout de suite pour tester ta compréhension",
+        "Lire plusieurs fois le cours pour bien assimiler",
+        "En discuter avec quelqu’un pour clarifier tes idées"
+    ]),
+    "Q10": ("On te propose de participer à un atelier pendant une semaine. Tu choisis :", [
+        "Construire un objet ou une maquette",
+        "Écrire un scénario, un article ou une histoire",
+        "Résoudre des énigmes ou défis logiques en équipe"
+    ]),
+    "Q11": ("Tu dois corriger un travail. Tu es plus attentif(ve) à :", [
+        "Si le raisonnement est juste, même si c’est mal présenté",
+        "Si le texte est clair et agréable à lire",
+        "Si l’idée est originale ou différente des autres"
+    ]),
+    "Q12": ("Pendant un exposé en groupe, tu préfères :", [
+        "Faire les recherches et organiser le contenu",
+        "Écrire le texte ou faire la présentation orale",
+        "Concevoir un support visuel ou interactif"
+    ]),
+    "Q13": ("Un prof te donne une consigne volontairement vague pour un projet libre. Tu ressens :", [
+        "Le besoin de lui demander des précisions",
+        "Une envie de proposer quelque chose d’original",
+        "De l’hésitation, mais tu finis par improviser"
+    ]),
+    "Q14": ("Tu assistes à un débat entre deux élèves. Tu observes surtout :", [
+        "Qui a les meilleurs arguments logiques",
+        "Qui s’exprime le plus clairement",
+        "Qui a des idées différentes et surprenantes"
+    ]),
+    "Q15": ("Ton professeur te demande de résumer un texte long. Tu commences par :", [
+        "Identifier les idées principales et les structurer",
+        "Reformuler phrase par phrase avec tes mots",
+        "Créer un plan visuel ou une carte mentale"
+    ])
+}
+
 
     reponses_bloc1 = {}
     for key, (question, options) in questions_bloc1.items():
