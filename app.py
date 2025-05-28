@@ -104,12 +104,12 @@ if st.session_state["etape"] == "bloc1":
         if len(reponses_bloc1) < len(questions_bloc1) or not prenom.strip():
             st.warning("Merci de répondre à toutes les questions et d’entrer ton prénom.")
         else:
+            prenom_nettoye = prenom.strip()
             with st.spinner("Analyse du profil..."):
                 try:
-                    prompt = f"Voici les réponses d’un élève marocain. Déduis son profil dominant : scientifique, littéraire ou mixte. Prénom : {prenom.strip()}\n"
+                    prompt = f"Voici les réponses d’un élève marocain. Déduis son profil dominant : scientifique, littéraire ou mixte. Prénom : {prenom_nettoye}\n"
                     for q, r in reponses_bloc1.items():
                         prompt += f"- {q} : {r}\n"
-
                     prompt += "Réponds en JSON : { \"orientation\": \"...\", \"resume\": \"...\" }"
 
                     response = client.chat.completions.create(
@@ -120,7 +120,7 @@ if st.session_state["etape"] == "bloc1":
                     result_json = json.loads(response.choices[0].message.content)
                     st.session_state["orientation"] = result_json["orientation"]
                     st.session_state["resume"] = result_json["resume"]
-                    st.session_state["prenom"] = prenom.strip()
+                    st.session_state["prenom_resultat"] = prenom_nettoye
                     st.session_state["etape"] = "bloc2"
                     st.rerun()
                 except Exception as e:
@@ -133,6 +133,7 @@ elif st.session_state["etape"] == "bloc2":
     profil = st.session_state["orientation"]
     st.success(f"📚 Profil détecté : {profil}")
     st.markdown(f"**Résumé Bloc 1 :** _{st.session_state['resume']}_")
+    st.markdown(f"**Prénom :** {st.session_state['prenom_resultat']}")
 
     literaire_qs = [
         ("Tu dois écrire un discours. Tu :", ["Note idées", "Cherche citations", "Rédige directement"]),
@@ -161,7 +162,7 @@ elif st.session_state["etape"] == "bloc2":
     if st.button("📊 Analyse finale"):
         with st.spinner("Analyse des réponses ciblées..."):
             try:
-                synthese_prompt = f"Profil : {profil}\nPrénom : {st.session_state['prenom']}\nRéponses Bloc 2 :\n"
+                synthese_prompt = f"Profil : {profil}\nPrénom : {st.session_state['prenom_resultat']}\nRéponses Bloc 2 :\n"
                 for q, r in reponses_bloc2.items():
                     synthese_prompt += f"- {q} : {r}\n"
 
