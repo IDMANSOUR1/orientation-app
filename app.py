@@ -137,7 +137,7 @@ elif st.session_state["etape"] == "bloc2":
     st.markdown(f"**Prénom :** {st.session_state['prenom_resultat']}")
 
   
-    scientifique_questions = [
+    scientifique_qs = [
     ("Tu découvres un nouveau concept en physique. Tu préfères :", ["Lire des explications théoriques", "Regarder une vidéo avec des expériences", "Faire toi-même une petite expérience"]),
     ("On te demande de créer une affiche sur un phénomène scientifique. Tu commences par :", ["Rechercher des données fiables", "Imaginer une expérience à montrer", "Faire un schéma clair"]),
     ("Tu dois résoudre un problème de maths inconnu. Tu :", ["Appliques une méthode connue", "Essaies plusieurs pistes logiques", "Demandes un exemple similaire"]),
@@ -152,7 +152,7 @@ elif st.session_state["etape"] == "bloc2":
 
 
 
-    literaire_questions = [
+    literaire_qs = [
     ("Tu dois écrire une lettre à un personnage historique. Tu :", ["Imagines son contexte", "Utilises un langage soutenu", "Racontes une situation fictive"]),
     ("On te demande de créer un article de blog. Tu préfères :", ["Argumenter sur un sujet d’actualité", "Témoigner d’une expérience personnelle", "Raconter une histoire touchante"]),
     ("En classe de français, tu préfères :", ["Les débats", "L’analyse de texte", "L’écriture d’invention"]),
