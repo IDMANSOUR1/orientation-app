@@ -136,16 +136,39 @@ elif st.session_state["etape"] == "bloc2":
     st.markdown(f"**Résumé Bloc 1 :** _{st.session_state['resume']}_")
     st.markdown(f"**Prénom :** {st.session_state['prenom_resultat']}")
 
-    literaire_qs = [
-        ("Tu dois écrire un discours. Tu :", ["Note idées", "Cherche citations", "Rédige directement"]),
-        ("Dans un débat, tu :", ["Arguments logiques", "Émotion", "Jeux de mots"]),
-        ("Lettre à un ami :", ["J’écris comme je parle", "Je structure", "Je fais un plan détaillé"]),
-    ]
-    scientifique_qs = [
-        ("Ton vélo a un problème. Tu :", ["Observe", "Cherche en ligne", "Demande à quelqu’un"]),
-        ("Puzzle logique. Tu :", ["Cherche les règles", "Teste au hasard", "Regarde un exemple"]),
-        ("Organiser une expérience. Tu :", ["Liste matériel", "Définit l’objectif", "Note les variables"]),
-    ]
+  
+    scientifique_questions = [
+    ("Tu découvres un nouveau concept en physique. Tu préfères :", ["Lire des explications théoriques", "Regarder une vidéo avec des expériences", "Faire toi-même une petite expérience"]),
+    ("On te demande de créer une affiche sur un phénomène scientifique. Tu commences par :", ["Rechercher des données fiables", "Imaginer une expérience à montrer", "Faire un schéma clair"]),
+    ("Tu dois résoudre un problème de maths inconnu. Tu :", ["Appliques une méthode connue", "Essaies plusieurs pistes logiques", "Demandes un exemple similaire"]),
+    ("En sciences, ce qui t’intéresse le plus c’est :", ["Comprendre les lois naturelles", "Trouver des applications concrètes", "Imaginer comment améliorer les choses"]),
+    ("Quand tu lis un problème scientifique, tu :", ["Détaille chaque donnée", "Visualises le problème dans ta tête", "Te l’expliques à haute voix"]),
+    ("Tu dois créer un projet en sciences. Tu préfères :", ["Un modèle réduit d’un phénomène", "Une recherche documentaire précise", "Un exposé oral avec données chiffrées"]),
+    ("On te propose un stage en laboratoire. Tu es surtout attiré par :", ["Manipuler des instruments", "Observer et noter les résultats", "Émettre des hypothèses à tester"]),
+    ("En mathématiques, tu ressens le plus de satisfaction quand :", ["Tu trouves le bon raisonnement", "Tu expliques la solution à d'autres", "Tu découvres une méthode nouvelle"]),
+    ("Tu es face à un système complexe. Tu :", ["Le décomposes en sous-éléments", "Cherches les relations entre les parties", "Simules son fonctionnement"]),
+    ("Tu dois organiser une sortie éducative. Tu proposes :", ["Une visite à un musée scientifique", "Un atelier de robotique", "Une expérience encadrée en classe"])
+]
+
+
+
+    literaire_questions = [
+    ("Tu dois écrire une lettre à un personnage historique. Tu :", ["Imagines son contexte", "Utilises un langage soutenu", "Racontes une situation fictive"]),
+    ("On te demande de créer un article de blog. Tu préfères :", ["Argumenter sur un sujet d’actualité", "Témoigner d’une expérience personnelle", "Raconter une histoire touchante"]),
+    ("En classe de français, tu préfères :", ["Les débats", "L’analyse de texte", "L’écriture d’invention"]),
+    ("Tu lis un texte ancien. Tu es curieux de :", ["L’époque et son contexte", "Le style de l’auteur", "La manière dont on peut l’adapter aujourd’hui"]),
+    ("Tu dois défendre une idée à l’écrit. Tu commences par :", ["Structurer tes arguments", "Trouver des exemples forts", "Choisir un ton percutant"]),
+    ("En cours de langue, tu aimes :", ["Traduire avec précision", "Jouer avec les mots et expressions", "Écrire des dialogues ou des récits"]),
+    ("Un film ou un livre t’a touché. Tu en parles en mettant en avant :", ["Le message profond", "Les émotions vécues", "Le style de narration"]),
+    ("Tu dois créer un podcast. Tu veux :", ["Partager une idée originale", "Interviewer des gens", "Lire un texte de ta création"]),
+    ("À la bibliothèque, tu cherches plutôt :", ["Des romans classiques", "Des livres d’analyse ou de critique", "Des recueils de poésie ou nouvelles"]),
+    ("Tu dois créer un spectacle de fin d’année. Tu veux :", ["Écrire le scénario", "Jouer un rôle marquant", "Créer la mise en scène"])
+]
+
+
+
+    
+
 
     if profil == "scientifique":
         questions = scientifique_qs
