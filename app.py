@@ -141,11 +141,11 @@ Génère maintenant la situation et les questions.
 """
 
             response = client.chat.completions.create(
-    model="gpt-4",
-    messages=[{"role": "user", "content": prompt_situation}],
-    temperature=0.7
-)
-situation = response.choices[0].message.content
+                  model="gpt-4",
+                  messages=[{"role": "user", "content": prompt_situation}],
+                  temperature=0.7
+            )
+            situation = response.choices[0].message.content
 
 
         st.markdown("### 📘 Situation complexe à résoudre")
