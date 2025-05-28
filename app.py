@@ -8,121 +8,109 @@ st.title("🎓 Test d'Orientation Implicite")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Navigation
-if "page" not in st.session_state:
-    st.session_state.page = "bloc1"
+if "etape" not in st.session_state:
+    st.session_state["etape"] = "bloc1"
 
-if st.session_state.page == "bloc1":
-    st.header("🧠 Réponds aux 15 situations")
+# === Bloc 1 ===
+if st.session_state["etape"] == "bloc1":
+    st.header("🧠 Bloc 1 : Situations générales")
     prenom = st.text_input("Prénom de l'élève :", key="prenom")
 
-     questions = {
-        "Q1": ("Ton professeur te donne un exposé sur un sujet inconnu. Tu as 3 jours. Tu :", [
-            "Organises tes idées en plan avant de chercher",
-            "Commences par écrire pour voir ce que tu penses",
-            "Dessines une carte mentale pour explorer le sujet"
+    questions_bloc1 = {
+        "Q1": ("Tu dois faire un exposé. Tu :", [
+            "Organises tes idées en plan",
+            "Commences par écrire",
+            "Dessines une carte mentale"
         ]),
-        "Q2": ("Un camarade bloque sur un exercice. Il te demande de l’aide. Tu :", [
-            "Réexplique la règle ou méthode",
-            "Reformules le problème avec tes mots",
-            "Inventes une métaphore pour l’aider"
+        "Q2": ("Un ami bloque sur un exercice. Tu :", [
+            "Réexplique la méthode",
+            "Reformules avec tes mots",
+            "Inventes une métaphore"
         ]),
-        "Q3": ("Ton professeur corrige un devoir en silence au tableau. Tu préfères :", [
-            "Une correction structurée étape par étape",
-            "Une explication orale avec des exemples",
-            "Plusieurs méthodes comparées"
+        "Q3": ("Tu préfères :", [
+            "Correction structurée",
+            "Explication orale",
+            "Méthodes comparées"
         ]),
-        "Q4": ("Tu dois faire un devoir noté. Tu choisis :", [
-            "Un problème avec une seule solution",
-            "Une rédaction libre",
-            "Un projet créatif"
+        "Q4": ("Tu choisis :", [
+            "Problème à solution unique",
+            "Rédaction libre",
+            "Projet créatif"
         ]),
-        "Q5": ("Ton prof pose une question difficile. Tu :", [
+        "Q5": ("Face à une question difficile, tu :", [
             "Tentes ta chance",
-            "Attends d’être certain(e)",
-            "Notes la question pour plus tard"
+            "Attends d’être sûr",
+            "Notes pour plus tard"
         ]),
-        "Q6": ("Un devoir est noté 'méthode originale mais pas rapide'. Tu te dis :", [
-            "Chercher une méthode plus logique",
-            "Être fier(e) d’avoir réfléchi autrement",
-            "Se questionner sur son style"
+        "Q6": ("On dit : 'méthode originale mais lente'. Tu :", [
+            "Cherches logique",
+            "Es fier(e)",
+            "T'interroges sur ton style"
         ]),
-        "Q7": ("Une heure libre au CDI avec Internet. Tu :", [
-            "Cherches un tuto sur un sujet qui te passionne",
-            "Lis un article, un blog ou regarde une vidéo d’analyse",
-            "Dessines, écris ou développes un projet"
+        "Q7": ("Au CDI, tu :", [
+            "Cherches un tuto",
+            "Lis un blog ou vidéo d’analyse",
+            "Crées un projet"
         ]),
-        "Q8": ("Un adulte te dit : 'Tu es méthodique'. Tu penses :", [
-            "Oui, j’aime que tout soit structuré",
-            "Non, je laisse venir les idées",
-            "Je suis les deux selon les moments"
+        "Q8": ("Tu es méthodique ?", [
+            "Oui, j’aime structurer",
+            "Non, idées spontanées",
+            "Les deux selon les cas"
         ]),
-        "Q9": ("Tu trouves un sujet difficile. Tu préfères :", [
-            "Faire un exercice pour tester ta compréhension",
-            "Relire le cours plusieurs fois",
-            "Discuter avec quelqu’un"
+        "Q9": ("Sujet difficile. Tu :", [
+            "Fais un exercice",
+            "Relis ton cours",
+            "Discutes avec quelqu’un"
         ]),
-        "Q10": ("On te propose un atelier libre. Tu choisis :", [
+        "Q10": ("Atelier libre. Tu choisis :", [
             "Construire une maquette",
-            "Écrire un scénario ou un article",
-            "Résoudre des énigmes en équipe"
+            "Écrire une histoire",
+            "Résoudre des énigmes"
         ]),
-        "Q11": ("Tu dois corriger un devoir. Tu regardes surtout :", [
-            "Si le raisonnement est juste",
-            "Si c’est bien écrit",
-            "Si l’idée est originale"
+        "Q11": ("Corriger un devoir. Tu regardes :", [
+            "Le raisonnement",
+            "La qualité d’écriture",
+            "L’originalité"
         ]),
-        "Q12": ("Pendant un exposé en groupe, tu préfères :", [
-            "Faire les recherches et organiser le contenu",
-            "Écrire le texte ou le présenter",
-            "Créer un support visuel"
+        "Q12": ("En exposé, tu préfères :", [
+            "Rechercher et organiser",
+            "Écrire ou présenter",
+            "Créer le support"
         ]),
-        "Q13": ("Un prof donne une consigne floue. Tu :", [
+        "Q13": ("Consigne floue. Tu :", [
             "Demande plus de détails",
             "Proposes une idée originale",
-            "Hésites puis improvises"
+            "Improvises"
         ]),
-        "Q14": ("Un débat entre deux élèves. Tu observes :", [
-            "Qui a les meilleurs arguments",
-            "Qui s’exprime le plus clairement",
-            "Qui est le plus surprenant"
+        "Q14": ("Débat. Tu observes :", [
+            "Les arguments",
+            "La clarté",
+            "La surprise"
         ]),
-        "Q15": ("On te demande de résumer un texte. Tu :", [
-            "Identifies les idées principales",
-            "Reformules avec tes mots",
-            "Fais une carte mentale"
+        "Q15": ("Pour résumer un texte :", [
+            "Idées principales",
+            "Tes mots",
+            "Carte mentale"
         ])
     }
-        # Ajoutez les 13 autres questions similaires ici (raccourci pour la clarté)
-    }
-    reponses = {}
-    for key, (question, options) in questions.items():
+
+    reponses_bloc1 = {}
+    for key, (question, options) in questions_bloc1.items():
         choix = st.radio(question, options, key=key)
         if choix:
-            reponses[key] = choix
+            reponses_bloc1[key] = choix
 
-    if st.button("➡️ Suivant : Analyser le profil"):
-        if len(reponses) < len(questions) or not prenom.strip():
+    if st.button("➡️ Suivant"):
+        if len(reponses_bloc1) < len(questions_bloc1) or not prenom.strip():
             st.warning("Merci de répondre à toutes les questions et d’entrer ton prénom.")
         else:
-            with st.spinner("Analyse en cours..."):
+            with st.spinner("Analyse du profil..."):
                 try:
-                    prompt = f"""
-Voici les réponses d’un élève marocain à un test d’orientation implicite. Déduis son profil dominant (scientifique, littéraire ou mixte), et propose une synthèse.
-
-Prénom : {prenom.strip()}
-Réponses :
-"""
-                    for q, r in reponses.items():
+                    prompt = f"Voici les réponses d’un élève marocain. Déduis son profil dominant : scientifique, littéraire ou mixte. Prénom : {prenom.strip()}\n"
+                    for q, r in reponses_bloc1.items():
                         prompt += f"- {q} : {r}\n"
 
-                    prompt += """
-Réponds en JSON :
-{
-  "orientation": "scientifique/littéraire/mixte",
-  "resume": "..."
-}
-"""
+                    prompt += "Réponds en JSON : { \"orientation\": \"...\", \"resume\": \"...\" }"
 
                     response = client.chat.completions.create(
                         model="gpt-4",
@@ -130,71 +118,61 @@ Réponds en JSON :
                         temperature=0.7
                     )
                     result_json = json.loads(response.choices[0].message.content)
-
-                    st.session_state["profil"] = result_json['orientation']
-                    st.session_state["resume"] = result_json['resume']
-                    st.session_state.page = "bloc2"
-                    st.experimental_rerun()
-
+                    st.session_state["orientation"] = result_json["orientation"]
+                    st.session_state["resume"] = result_json["resume"]
+                    st.session_state["prenom"] = prenom.strip()
+                    st.session_state["etape"] = "bloc2"
+                    st.rerun()
                 except Exception as e:
-                    st.error(f"❌ Une erreur est survenue : {str(e)}")
+                    st.error(f"Erreur GPT : {str(e)}")
 
-elif st.session_state.page == "bloc2":
-    st.header("📘 Bloc 2 : Questions selon ton profil")
+# === Bloc 2 ===
+elif st.session_state["etape"] == "bloc2":
+    st.header("📘 Bloc 2 : Questions ciblées")
 
-    profil = st.session_state["profil"].lower()
-    resume = st.session_state.get("resume", "")
+    profil = st.session_state["orientation"]
+    st.success(f"📚 Profil détecté : {profil}")
+    st.markdown(f"**Résumé Bloc 1 :** _{st.session_state['resume']}_")
 
-    st.markdown(f"**🧑 Prénom :** {st.session_state.get('prenom', '')}")
-    st.markdown(f"**📚 Orientation recommandée :** `{profil}`")
-    st.markdown("**📝 Résumé :**")
-    st.markdown(f"> {resume}")
-
-    literaire_questions = [
-        ("Tu dois écrire un discours pour convaincre : que fais-tu en premier ?", ["Je note mes idées clés", "Je cherche des citations", "Je rédige directement"]),
-        ("Dans un débat, tu préfères :", ["Présenter des arguments logiques", "Toucher les émotions", "Jouer avec les mots"])
+    literaire_qs = [
+        ("Tu dois écrire un discours. Tu :", ["Note idées", "Cherche citations", "Rédige directement"]),
+        ("Dans un débat, tu :", ["Arguments logiques", "Émotion", "Jeux de mots"]),
+        ("Lettre à un ami :", ["J’écris comme je parle", "Je structure", "Je fais un plan détaillé"]),
+    ]
+    scientifique_qs = [
+        ("Ton vélo a un problème. Tu :", ["Observe", "Cherche en ligne", "Demande à quelqu’un"]),
+        ("Puzzle logique. Tu :", ["Cherche les règles", "Teste au hasard", "Regarde un exemple"]),
+        ("Organiser une expérience. Tu :", ["Liste matériel", "Définit l’objectif", "Note les variables"]),
     ]
 
-    scientifique_questions = [
-        ("Tu rencontres un problème avec ton vélo. Quelle est ta première réaction ?", ["Observer et identifier le problème", "Chercher une solution sur Internet", "Demander à quelqu’un"]),
-        ("On te donne un puzzle logique. Que fais-tu ?", ["Je cherche les règles du jeu", "Je commence au hasard pour tester", "Je regarde un exemple"])
-    ]
-
-    if profil == "littéraire":
-        questions_bloc2 = literaire_questions
-    elif profil == "scientifique":
-        questions_bloc2 = scientifique_questions
+    if profil == "scientifique":
+        questions = scientifique_qs
+    elif profil == "littéraire":
+        questions = literaire_qs
     else:
-        questions_bloc2 = literaire_questions[:1] + scientifique_questions[:1]
+        questions = scientifique_qs[:2] + literaire_qs[:1]
 
     reponses_bloc2 = {}
-    for idx, (question, options) in enumerate(questions_bloc2):
-        choix = st.radio(f"Q{16 + idx} : {question}", options, key=f"Q{16 + idx}")
-        reponses_bloc2[f"Q{16 + idx}"] = choix
+    for idx, (question, options) in enumerate(questions):
+        qkey = f"B2_Q{idx+1}"
+        choix = st.radio(f"{question}", options, key=qkey)
+        reponses_bloc2[qkey] = choix
 
-    if st.button("📊 Analyser Bloc 2"):
-        with st.spinner("Analyse complémentaire..."):
+    if st.button("📊 Analyse finale"):
+        with st.spinner("Analyse des réponses ciblées..."):
             try:
-                summary_prompt = f"""
-Voici les réponses d’un élève à un bloc de questions ciblées pour l’orientation scolaire. Analyse ces réponses pour détecter des traits cognitifs, des préférences ou des comportements liés à l’apprentissage, en lien avec le profil estimé ({profil}).
-
-Réponses Bloc 2 :
-"""
+                synthese_prompt = f"Profil : {profil}\nPrénom : {st.session_state['prenom']}\nRéponses Bloc 2 :\n"
                 for q, r in reponses_bloc2.items():
-                    summary_prompt += f"- {q} : {r}\n"
+                    synthese_prompt += f"- {q} : {r}\n"
 
-                summary_prompt += """
-Rédige une brève synthèse sur son fonctionnement cognitif et donne un conseil adapté.
-"""
+                synthese_prompt += "Analyse le fonctionnement cognitif de l’élève et propose un conseil d’orientation adapté."
 
                 completion = client.chat.completions.create(
                     model="gpt-4",
-                    messages=[{"role": "user", "content": summary_prompt}],
+                    messages=[{"role": "user", "content": synthese_prompt}],
                     temperature=0.7
                 )
-                synthese = completion.choices[0].message.content
-                st.markdown("### 🧠 Analyse Bloc 2")
-                st.markdown(synthese)
-
+                st.markdown("### 🧠 Synthèse finale")
+                st.markdown(completion.choices[0].message.content)
             except Exception as e:
                 st.error(f"Erreur GPT : {str(e)}")
