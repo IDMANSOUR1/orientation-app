@@ -4,7 +4,7 @@ from openai import OpenAI
 import json
 
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
-st.title("🎓 Test d'Orientation Scolaire - Collégien")
+st.title("🎓 Test d'Orientation Implicite")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -13,21 +13,21 @@ if "etape" not in st.session_state:
 
 # === Bloc 1 ===
 if st.session_state["etape"] == "bloc1":
-    st.header("🧠 Bloc 1 : Réponds aux 15 situations")
-    prenom = st.text_input("Ton prénom :", key="prenom")
-    
+    st.header("🧠 Bloc 1 : Situations générales")
+    prenom = st.text_input("Prénom de l'élève :", key="prenom")
+
     questions_bloc1 = {
-        "Q1": ("Tu fais face à un nouveau sujet inconnu. Tu :", [
-            "Organises tes idées en plan",
-            "Commences à écrire directement",
-            "Fais une carte mentale"
+        "Q1": ("Ton professeur te donne un exposé à faire sur un sujet que tu ne connais pas du tout. Tu as 3 jours. Tu :", [
+            "Organises les idées en plan avant de commencer à chercher",
+            "Commences par écrire des phrases pour voir ce que tu en penses",
+            "Dessines un schéma ou une carte mentale pour explorer le sujet"
         ]),
-        "Q2": ("Un camarade te demande de l’aide sur un exercice. Tu :", [
-            "Réexplique la méthode",
-            "Reformules le problème",
-            "Inventes une métaphore"
+        "Q2": ("Un camarade bloque sur un exercice. Il te demande de l’aide. Tu :", [
+            "Réexplique la règle ou la méthode",
+            "Reformules le problème avec tes propres mots",
+            "Inventes une analogie ou une métaphore pour l’aider"
         ]),
-        # ➕ Ajoute ici Q3 à Q15
+        # ... ajoute jusqu'à Q15 comme tu l'avais déjà fait ...
     }
 
     reponses_bloc1 = {}
@@ -40,103 +40,133 @@ if st.session_state["etape"] == "bloc1":
         if len(reponses_bloc1) < len(questions_bloc1) or not prenom.strip():
             st.warning("Merci de répondre à toutes les questions et d’entrer ton prénom.")
         else:
-            st.session_state["prenom"] = prenom.strip()
-            st.session_state["reponses_bloc1"] = reponses_bloc1
-            prompt = f"Voici les réponses d’un élève. Donne son profil dominant : scientifique, littéraire ou mixte.\n"
+            prompt = f"Voici les réponses d’un élève marocain. Déduis son profil dominant : scientifique, littéraire ou mixte.\nPrénom : {prenom.strip()}\n"
             for q, r in reponses_bloc1.items():
                 prompt += f"- {q} : {r}\n"
-            prompt += "Réponds uniquement en JSON : { \"profil\": \"...\" }"
-            try:
-                response = client.chat.completions.create(
-                    model="gpt-4",
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=0.7
-                )
-                data = json.loads(response.choices[0].message.content)
-                st.session_state["profil"] = data["profil"]
-                st.session_state["etape"] = "bloc2"
-                st.rerun()
-            except Exception as e:
-                st.error(f"Erreur GPT : {str(e)}")
+            prompt += "Réponds en JSON : { \"orientation\": \"...\", \"resume\": \"...\" }"
+
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7
+            )
+            result_json = json.loads(response.choices[0].message.content)
+            st.session_state["orientation"] = result_json["orientation"]
+            st.session_state["resume"] = result_json["resume"]
+            st.session_state["prenom_resultat"] = prenom.strip()
+            st.session_state["etape"] = "bloc2"
+            st.rerun()
 
 # === Bloc 2 ===
 elif st.session_state["etape"] == "bloc2":
     st.header("📘 Bloc 2 : Questions ciblées")
-    profil = st.session_state["profil"]
 
-    scientifique_qs = [
-        ("Tu découvres un nouveau concept scientifique. Tu :", ["Lis une explication", "Cherches une vidéo", "Fais une expérience"]),
-        # ➕ Ajoute 9 autres questions ici
-    ]
-    literaire_qs = [
-        ("Tu dois écrire une lettre à un personnage historique. Tu :", ["Imagines son époque", "Utilises un beau style", "Racontes une histoire"]),
-        # ➕ Ajoute 9 autres questions ici
-    ]
+    profil = st.session_state["orientation"]
+    st.success(f"📚 Profil détecté : {profil}")
+    st.markdown(f"**Résumé Bloc 1 :** _{st.session_state['resume']}_")
 
+    questions = []
     if profil == "scientifique":
-        questions = scientifique_qs
+        questions = [
+            ("Tu découvres un nouveau concept en physique. Tu préfères :", ["Lire des explications", "Regarder des expériences", "Tester par toi-même"]),
+            # ... jusqu’à 10 questions scientifiques ...
+        ]
     elif profil == "littéraire":
-        questions = literaire_qs
-    else:
-        questions = scientifique_qs[:5] + literaire_qs[:5]
+        questions = [
+            ("Tu dois écrire une lettre à un personnage historique. Tu :", ["Imagines le contexte", "Utilises un style soutenu", "Racontes une fiction"]),
+            # ... jusqu’à 10 questions littéraires ...
+        ]
 
     reponses_bloc2 = {}
     for idx, (question, options) in enumerate(questions):
         qkey = f"B2_Q{idx+1}"
-        choix = st.radio(f"{question}", options, key=qkey)
+        choix = st.radio(question, options, key=qkey)
         reponses_bloc2[qkey] = choix
 
-    if st.button("➡️ Suivant (Bloc 3)"):
-        st.session_state["reponses_bloc2"] = reponses_bloc2
-        st.session_state["etape"] = "bloc3"
-        st.rerun()
+    if st.button("➡️ Suivant (Analyse + Bloc 3)"):
+        try:
+            synthese_prompt = f"Profil : {profil}\nPrénom : {st.session_state['prenom_resultat']}\nRéponses Bloc 2 :\n"
+            for q, r in reponses_bloc2.items():
+                synthese_prompt += f"- {q} : {r}\n"
+            synthese_prompt += "Analyse les points forts et prépare l’élève au Bloc 3."
+
+            synthese = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": synthese_prompt}],
+                temperature=0.7
+            ).choices[0].message.content
+
+            st.session_state["synthese_bloc2"] = synthese
+            st.session_state["etape"] = "bloc3"
+            st.rerun()
+        except Exception as e:
+            st.error(f"Erreur GPT : {str(e)}")
 
 # === Bloc 3 ===
 elif st.session_state["etape"] == "bloc3":
-    st.header("🧪 Bloc 3 : Situation complexe de confirmation")
-    profil = st.session_state["profil"]
+    st.header("🔍 Bloc 3 : Confirmation par situation complexe")
 
-    if "situation" not in st.session_state:
-        situation_prompt = f"""Crée une situation complexe pour un élève de collège marocain au profil {profil}.
-Donne :
-- Un court scénario crédible et engageant
-- 3 à 5 questions ouvertes qui explorent sa logique, sa créativité et son raisonnement.
-Langage simple. But : confirmer le profil."""
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": situation_prompt}],
-                temperature=0.7
-            )
-            st.session_state["situation"] = response.choices[0].message.content
-        except Exception as e:
-            st.error(f"Erreur GPT : {str(e)}")
+    profil = st.session_state["orientation"]
+    st.markdown(f"**📚 Profil prédit :** {profil}")
+    st.markdown(f"**📝 Synthèse Bloc 2 :** {st.session_state['synthese_bloc2']}")
 
-    st.markdown(st.session_state["situation"])
-    reponse_libre = st.text_area("📝 Tes réponses libres :", key="bloc3_reponse")
+    try:
+        prompt_situation = f"""
+Tu es un expert en orientation scolaire.
 
-    if st.button("🎯 Résultat final"):
-        analyse_finale_prompt = f"""
-Voici toutes les réponses d’un élève :
-- Bloc 1 : {st.session_state['reponses_bloc1']}
-- Bloc 2 : {st.session_state['reponses_bloc2']}
-- Bloc 3 : {st.session_state['situation']} \nRéponses : {reponse_libre}
+Génère une **situation complexe** adaptée à un jeune élève marocain (niveau collège ou début lycée), au **profil estimé : {profil}**.
 
-Fais une synthèse finale de 4 à 6 phrases :
-1. Indique clairement son profil
-2. Souligne ses points forts
-3. Donne 2 ou 3 pistes d'orientation
-4. Termine par un conseil positif
+🎯 Objectif : vérifier la **cohérence du profil** à partir d’une situation qui mobilise :
+- la manière de réfléchir (logique, créativité, intuition…)
+- la façon d’apprendre (mémoire, expérimentation, discussion…)
+- l’expression personnelle (écrite ou orale)
+- la posture face à l’incertitude, à l’autonomie et à la résolution de problèmes
 
-Langage adapté à un élève, direct, chaleureux et clair.
+🧩 Format attendu :
+1. Une situation concrète, réaliste, et engageante, en 4 à 6 lignes maximum.
+   - Elle peut être scolaire ou non (vie quotidienne, projet, discussion…)
+   - Elle doit intégrer au moins 2 dimensions cognitives ou expressives
+2. Ensuite, 3 à 5 **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
+
+📝 Style :
+- Langage accessible, direct, sans vocabulaire académique complexe.
+- Aucun diagnostic. Ne conclus rien.
+- Ne donne pas de réponses, uniquement la **situation + les questions**.
+
+Exemples :
+- Profil scientifique : situation où il faut résoudre un problème ou organiser un projet concret.
+- Profil littéraire : situation où il faut argumenter, raconter ou interpréter un événement.
+
+Génère maintenant la situation et les questions.
 """
-        try:
+
+            messages=[{"role": "user", "content": prompt_situation}],
+            temperature=0.7
+        ).choices[0].message.content
+
+        st.markdown("### 📘 Situation complexe à résoudre")
+        st.markdown(situation)
+
+        rep1 = st.text_area("Réponse 1")
+        rep2 = st.text_area("Réponse 2")
+        rep3 = st.text_area("Réponse 3")
+
+        if st.button("📍 Analyse finale et profil confirmé"):
+            prompt_final = f"""Voici les réponses à une situation complexe pour un élève au profil {profil} :
+1. {rep1}
+2. {rep2}
+3. {rep3}
+
+Analyse-les pour confirmer ou ajuster le profil (scientifique/littéraire/mixte) et donne une recommandation claire et motivante."""
+
             final = client.chat.completions.create(
                 model="gpt-4",
-                messages=[{"role": "user", "content": analyse_finale_prompt}],
+                messages=[{"role": "user", "content": prompt_final}],
                 temperature=0.7
-            )
-            st.markdown("### 🧠 Résultat final")
-            st.markdown(final.choices[0].message.content)
-        except Exception as e:
-            st.error(f"Erreur GPT : {str(e)}")
+            ).choices[0].message.content
+
+            st.markdown("## ✅ Résultat final")
+            st.markdown(final)
+
+    except Exception as e:
+        st.error(f"Erreur lors de la génération de la situation complexe : {str(e)}")
