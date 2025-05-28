@@ -4,7 +4,7 @@ from openai import OpenAI
 import json
 
 st.set_page_config(page_title="Orientation Collège Maroc", layout="centered")
-st.title("🎓 Test d'Orientation Implicite")
+st.title("🎓 Test d'Orientation Scolaire")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -227,15 +227,18 @@ Exemples :
 Génère maintenant la situation et les questions.
 """
 
-        response = client.chat.completions.create(
-                  model="gpt-4",
-                  messages=[{"role": "user", "content": prompt_situation}],
-                  temperature=0.7
-        )
-        situation = response.choices[0].message.content
+        if "situation_bloc3" not in st.session_state:
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt_situation}],
+                temperature=0.7
+            )
+            st.session_state["situation_bloc3"] = response.choices[0].message.content
+    situation = st.session_state["situation_bloc3"]
 
 
-        st.markdown("### 📘 Situation complexe à résoudre")
+
+        st.markdown("### 📘 Situation ")
         st.markdown(situation)
 
         rep1 = st.text_area("Réponse 1")
