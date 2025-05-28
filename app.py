@@ -272,22 +272,24 @@ Analyse les réponses pour produire un BILAN FINAL clair, structuré, sans disco
 """
 
 
-            final = client.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": prompt_final}],
-                temperature=0.7
-            ).choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt_final}],
+            temperature=0.7
+        )
+        result_json = json.loads(response.choices[0].message.content)
 
-            st.markdown("## ✅ Résultat final")
-            st.subheader(f"🎓 Ton profil : **{result_json['profil'].capitalize()}**")
-            st.markdown("### 💡 Tes points forts")
+        st.markdown("## ✅ Résultat final")
+        st.subheader(f"🎓 Ton profil : **{result_json['profil'].capitalize()}**")
+        st.markdown("### 💡 Tes points forts")
             for point in result_json["points_forts"]:
                 st.markdown(f"- {point}")
                 st.markdown("### 🧭 Pistes d’orientation proposées")
             for piste in result_json["pistes"]:
                 st.markdown(f"- {piste}")
-            st.markdown("### 💬 Conseil personnalisé")
-            st.info(result_json["conseil"])
+        st.markdown("### 💬 Conseil personnalisé")
+        st.info(result_json["conseil"])
 
 
     except Exception as e:
