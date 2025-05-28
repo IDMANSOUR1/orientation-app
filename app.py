@@ -111,7 +111,34 @@ elif st.session_state["etape"] == "bloc3":
     st.markdown(f"**📝 Synthèse Bloc 2 :** {st.session_state['synthese_bloc2']}")
 
     try:
-        prompt_situation = f"Génère une situation complexe pour confirmer un profil {profil} d’orientation scolaire. La situation doit :\n- être réaliste\n- contenir deux dimensions (émotionnelle, logique...)\n- se terminer par 3 questions ouvertes"
+        prompt_situation = f"""
+Tu es un expert en orientation scolaire.
+
+Génère une **situation complexe** adaptée à un jeune élève marocain (niveau collège ou début lycée), au **profil estimé : {profil}**.
+
+🎯 Objectif : vérifier la **cohérence du profil** à partir d’une situation qui mobilise :
+- la manière de réfléchir (logique, créativité, intuition…)
+- la façon d’apprendre (mémoire, expérimentation, discussion…)
+- l’expression personnelle (écrite ou orale)
+- la posture face à l’incertitude, à l’autonomie et à la résolution de problèmes
+
+🧩 Format attendu :
+1. Une situation concrète, réaliste, et engageante, en 4 à 6 lignes maximum.
+   - Elle peut être scolaire ou non (vie quotidienne, projet, discussion…)
+   - Elle doit intégrer au moins 2 dimensions cognitives ou expressives
+2. Ensuite, 3 à 5 **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
+
+📝 Style :
+- Langage accessible, direct, sans vocabulaire académique complexe.
+- Aucun diagnostic. Ne conclus rien.
+- Ne donne pas de réponses, uniquement la **situation + les questions**.
+
+Exemples :
+- Profil scientifique : situation où il faut résoudre un problème ou organiser un projet concret.
+- Profil littéraire : situation où il faut argumenter, raconter ou interpréter un événement.
+
+Génère maintenant la situation et les questions.
+"""
 
         situation = client.chat.completions.create(
             model="gpt-4",
