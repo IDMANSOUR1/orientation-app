@@ -234,7 +234,7 @@ Génère maintenant la situation et les questions.
                 temperature=0.7
             )
             st.session_state["situation_bloc3"] = response.choices[0].message.content
-    situation = st.session_state["situation_bloc3"]
+        situation = st.session_state["situation_bloc3"]
 
 
 
