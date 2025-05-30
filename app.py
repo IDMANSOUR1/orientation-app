@@ -47,7 +47,7 @@ if st.session_state["etape"] == "bloc1":
         "Je suis fier(e), ça veut dire que j’ai réfléchi autrement",
         "Je me demande si mon style d’approche est un atout ou une faiblesse"
     ]),
-    "Q7": ("Tu as une heure de liberté dans un CDI avec Internet. Tu fais quoi ?", [
+    "Q7": ("Tu as une heure de liberté dans Une bibliothèque avec Internet. Tu fais quoi ?", [
         "Cherches un tuto sur un sujet qui te fascine (sciences, tech, etc.)",
         "Lis un article, un blog, ou regardes une vidéo d’analyse",
         "Dessines, écris ou prépares un projet personnel"
