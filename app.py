@@ -211,7 +211,7 @@ Génère une **situation complexe** adaptée à un jeune élève marocain (nivea
 1. Une situation concrète, réaliste, et engageante, en 4 à 6 lignes maximum.
    - Elle peut être scolaire ou non (vie quotidienne, projet, discussion…)
    - Elle doit intégrer au moins 2 dimensions cognitives ou expressives
-2. Ensuite, 3 **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
+2. Ensuite, 3seulement **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
 
 📝 Style :
 - Langage accessible, direct, sans vocabulaire académique complexe.
