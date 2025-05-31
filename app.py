@@ -237,9 +237,31 @@ Génère maintenant la situation et les questions.
         st.markdown("### 📘 Situation")
         st.markdown(situation)
 
-        rep1 = st.text_area("Réponse 1")
-        rep2 = st.text_area("Réponse 2")
-        rep3 = st.text_area("Réponse 3")
+        import re
+
+st.markdown("### 📘 Situation")
+# Séparer la situation et les questions
+parts = situation.strip().split("\n")
+
+# Afficher la situation (jusqu’à la première question)
+situation_text = []
+questions = []
+for line in parts:
+    if re.match(r"^\d+\.", line.strip()) or re.match(r"^-", line.strip()):
+        questions.append(line.strip())
+    else:
+        situation_text.append(line.strip())
+
+# Affichage de la situation
+st.markdown("\n".join(situation_text))
+
+# Affichage des questions avec champ de réponse sous chaque
+reponses_ouvertes = []
+for i, question in enumerate(questions):
+    st.markdown(f"**{question}**")
+    reponse = st.text_area(f"Réponse {i+1}", key=f"rep_bloc3_{i+1}")
+    reponses_ouvertes.append(reponse)
+
 
         if st.button("📍 Analyse "):
             prompt_final = f"""
@@ -247,9 +269,10 @@ Tu es un expert en orientation scolaire pour élèves de collège au Maroc.
 
 Voici les réponses d’un élève à une situation complexe (profil estimé : {profil}) :
 
-Réponse 1 : {rep1}
-Réponse 2 : {rep2}
-Réponse 3 : {rep3}
+Réponse 1 : {reponses_ouvertes[0]}
+Réponse 2 : {reponses_ouvertes[1]}
+Réponse 3 : {reponses_ouvertes[2]}
+
 
 Analyse-les pour produire un BILAN FINAL clair, structuré, sans discours long.
 
