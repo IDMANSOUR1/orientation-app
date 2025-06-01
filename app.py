@@ -239,28 +239,23 @@ Génère maintenant la situation et les questions.
         
         
         import re
-
-# Découper la situation et les questions
-lines = situation.strip().split("\n")
-situation_text = []
-questions = []
-
-for line in lines:
-    if re.match(r"^\d+\.", line.strip()):
-        questions.append(line.strip())
-    else:
-        situation_text.append(line.strip())
-
-# Afficher la situation
-st.markdown("### 📘 Situation")
-st.markdown("\n".join(situation_text))
-
-# Afficher chaque question suivie de sa réponse
-reponses_ouvertes = []
-for i, question in enumerate(questions):
-    st.markdown(f"**{question}**")
-    reponse = st.text_area("", key=f"rep_bloc3_{i+1}", height=100)
-    reponses_ouvertes.append(reponse)
+        lines = situation.strip().split("\n")
+        situation_text = []
+        questions = []
+        for line in lines:
+            if re.match(r"^\d+\.", line.strip()):
+                questions.append(line.strip())
+            else:
+                situation_text.append(line.strip())
+        
+        st.markdown("### 📘 Situation")
+        st.markdown("\n".join(situation_text))
+        
+        reponses_ouvertes = []
+        for i, question in enumerate(questions):
+            st.markdown(f"**{question}**")
+            reponse = st.text_area("", key=f"rep_bloc3_{i+1}", height=100)
+            reponses_ouvertes.append(reponse)
 
 # Affichage des questions avec champ de réponse sous chaque
 reponses_ouvertes = []
