@@ -257,13 +257,6 @@ Génère maintenant la situation et les questions.
             reponse = st.text_area("", key=f"rep_bloc3_{i+1}", height=100)
             reponses_ouvertes.append(reponse)
             
-            
-        reponses_ouvertes = []
-        for i, question in enumerate(questions):
-    st.markdown(f"**{question}**")
-    reponse = st.text_area(f"Réponse {i+1}", key=f"rep_bloc3_{i+1}")
-    reponses_ouvertes.append(reponse)
-    
     
     if st.button("📍 Analyse "):
             prompt_final = f"""
