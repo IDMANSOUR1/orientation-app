@@ -236,9 +236,9 @@ Génère maintenant la situation et les questions.
         situation = st.session_state["situation_bloc3"]
         st.markdown("### 📘 Situation")
         st.markdown(situation)
-
-
-import re
+        
+        
+        import re
 
 # Découper la situation et les questions
 lines = situation.strip().split("\n")
