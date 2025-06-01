@@ -256,16 +256,16 @@ Génère maintenant la situation et les questions.
             st.markdown(f"**{question}**")
             reponse = st.text_area("", key=f"rep_bloc3_{i+1}", height=100)
             reponses_ouvertes.append(reponse)
-
-# Affichage des questions avec champ de réponse sous chaque
-reponses_ouvertes = []
-for i, question in enumerate(questions):
+            
+            
+        reponses_ouvertes = []
+        for i, question in enumerate(questions):
     st.markdown(f"**{question}**")
     reponse = st.text_area(f"Réponse {i+1}", key=f"rep_bloc3_{i+1}")
     reponses_ouvertes.append(reponse)
-
-
-        if st.button("📍 Analyse "):
+    
+    
+    if st.button("📍 Analyse "):
             prompt_final = f"""
 Tu es un expert en orientation scolaire pour élèves de collège au Maroc.
 
