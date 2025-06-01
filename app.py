@@ -1,3 +1,41 @@
+// pages/api/orientation.js
+// pages/api/orientation.js
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Méthode non autorisée" });
+  }
+
+  const { prompt } = req.body;
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7
+    });
+
+    const message = completion.choices[0].message.content;
+
+    console.log("✅ Prompt reçu : ", prompt); // Affiche le prompt reçu
+    console.log("✅ Réponse GPT : ", message);
+  try {
+      const json = JSON.parse(message); // ✅ convertit la chaîne en JSON
+      return res.status(200).json(json); // ✅ renvoie { orientation, resume }
+      } catch (e) {
+        console.error("❌ Erreur de parsing JSON depuis GPT :", e);
+        return res.status(200).json({ orientation: "", resume: message }); // en fallbac
+        }
+      } catch (error) {
+        console.error("Erreur OpenAI :", error);
+        return res.status(500).json({ error: "Erreur GPT" });
+      }
+}
 import streamlit as st
 import os
 from openai import OpenAI
@@ -236,38 +274,20 @@ Génère maintenant la situation et les questions.
         situation = st.session_state["situation_bloc3"]
         st.markdown("### 📘 Situation")
         st.markdown(situation)
-        
-        
-        import re
-        lines = situation.strip().split("\n")
-        situation_text = []
-        questions = []
-        for line in lines:
-            if re.match(r"^\d+\.", line.strip()):
-                questions.append(line.strip())
-            else:
-                situation_text.append(line.strip())
-        
-        st.markdown("### 📘 Situation")
-        st.markdown("\n".join(situation_text))
-        
-        reponses_ouvertes = []
-        for i, question in enumerate(questions):
-            st.markdown(f"**{question}**")
-            reponse = st.text_area("", key=f"rep_bloc3_{i+1}", height=100)
-            reponses_ouvertes.append(reponse)
-            
-    
-    if st.button("📍 Analyse "):
+
+        rep1 = st.text_area("Réponse 1")
+        rep2 = st.text_area("Réponse 2")
+        rep3 = st.text_area("Réponse 3")
+
+        if st.button("📍 Analyse "):
             prompt_final = f"""
 Tu es un expert en orientation scolaire pour élèves de collège au Maroc.
 
 Voici les réponses d’un élève à une situation complexe (profil estimé : {profil}) :
 
-Réponse 1 : {reponses_ouvertes[0]}
-Réponse 2 : {reponses_ouvertes[1]}
-Réponse 3 : {reponses_ouvertes[2]}
-
+Réponse 1 : {rep1}
+Réponse 2 : {rep2}
+Réponse 3 : {rep3}
 
 Analyse-les pour produire un BILAN FINAL clair, structuré, sans discours long.
 
