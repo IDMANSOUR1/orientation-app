@@ -25,8 +25,8 @@ export default async function handler(req, res) {
     console.log("✅ Prompt reçu : ", prompt); // Affiche le prompt reçu
     console.log("✅ Réponse GPT : ", message);
   try {
-      const json = JSON.parse(message); // ✅ convertit la chaîne en JSON
-      return res.status(200).json(json); // ✅ renvoie { orientation, resume }
+      const json = JSON.parse(message); 
+      return res.status(200).json(json); 
       } catch (e) {
         console.error("❌ Erreur de parsing JSON depuis GPT :", e);
         return res.status(200).json({ orientation: "", resume: message }); // en fallbac
