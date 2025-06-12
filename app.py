@@ -196,8 +196,8 @@ elif st.session_state["etape"] == "bloc3":
     profil = st.session_state["orientation"]
 
     try:
-if profil == "scientifique":
-    prompt_situation = """
+    if profil == "scientifique":
+      prompt_situation = """
 Voici une situation complexe adaptée au profil scientifique :
 
 ### 📘 Situation
@@ -208,8 +208,8 @@ Tu es membre d’un club scientifique dans ton collège. Le directeur vous propo
 2. Quels outils ou expériences utiliserais-tu pour rendre le phénomène compréhensible et intéressant ?
 3. Si tu rencontres une difficulté (temps limité, matériel manquant…), comment réagirais-tu pour résoudre le problème ?
 """
-else:
-    prompt_situation = f"""
+    else:
+      prompt_situation = f"""
 Tu es un expert en orientation scolaire.
 
 Génère une **situation complexe** adaptée à un jeune élève marocain (niveau collège ou début lycée), au **profil estimé : {profil}**.
