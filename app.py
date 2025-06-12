@@ -196,10 +196,9 @@ elif st.session_state["etape"] == "bloc3":
     profil = st.session_state["orientation"]
 
     try:
-        if profil == "scientifique":
-            prompt_situation = """
-Voici une situation complexe adaptée au profil scientifique fai juste cette application:
-
+        if "situation_bloc3" not in st.session_state:
+            if profil == "scientifique":
+                st.session_state["situation_bloc3"] = """
 ### 📘 Situation
 Tu es membre d’un club scientifique dans ton collège. Le directeur vous propose de concevoir une activité originale pour expliquer un phénomène scientifique aux élèves plus jeunes (comme le cycle de l’eau, la gravité ou l’électricité). Ton équipe a une semaine pour préparer cette activité et la présenter en classe. Vous devez choisir la méthode, les outils, et organiser la démonstration.
 
@@ -208,8 +207,8 @@ Tu es membre d’un club scientifique dans ton collège. Le directeur vous propo
 2. Quels outils ou expériences utiliserais-tu pour rendre le phénomène compréhensible et intéressant ?
 3. Si tu rencontres une difficulté (temps limité, matériel manquant…), comment réagirais-tu pour résoudre le problème ?
 """
-        else:
-            prompt_situation = f"""
+            else:
+                prompt_situation = f"""
 Tu es un expert en orientation scolaire.
 
 Génère une **situation complexe** adaptée à un jeune élève marocain (niveau collège ou début lycée), au **profil estimé : {profil}**.
@@ -237,23 +236,24 @@ Exemples :
 
 Génère maintenant la situation et les questions.
 """
+                response = client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[{"role": "user", "content": prompt_situation}],
+                    temperature=0.7
+                )
+                st.session_state["situation_bloc3"] = response.choices[0].message.content
 
-        if "situation_bloc3" not in st.session_state:
-            response = client.chat.completions.create(
-                model="gpt-4",
-                messages=[{"role": "user", "content": prompt_situation}],
-                temperature=0.7
-            )
-            st.session_state["situation_bloc3"] = response.choices[0].message.content
-
+        # Affichage de la situation
         situation = st.session_state["situation_bloc3"]
         st.markdown("### 📘 Situation")
         st.markdown(situation)
 
+        # Réponses de l'élève
         rep1 = st.text_area("Réponse 1")
         rep2 = st.text_area("Réponse 2")
         rep3 = st.text_area("Réponse 3")
 
+        # Analyse GPT
         if st.button("📍 Analyse "):
             prompt_final = f"""
 Tu es un expert en orientation scolaire pour élèves de collège au Maroc.
@@ -279,7 +279,6 @@ Analyse-les pour produire un BILAN FINAL clair, structuré, sans discours long.
 ✅ Ne parle pas de 'je suis un modèle IA'.
 ✅ Sois concis, direct et motivant.
 """
-
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=[{"role": "user", "content": prompt_final}],
