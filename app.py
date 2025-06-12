@@ -198,7 +198,7 @@ elif st.session_state["etape"] == "bloc3":
     try:
         if profil == "scientifique":
             prompt_situation = """
-Voici une situation complexe adaptée au profil scientifique :
+Voici une situation complexe adaptée au profil scientifique fai juste cette application:
 
 ### 📘 Situation
 Tu es membre d’un club scientifique dans ton collège. Le directeur vous propose de concevoir une activité originale pour expliquer un phénomène scientifique aux élèves plus jeunes (comme le cycle de l’eau, la gravité ou l’électricité). Ton équipe a une semaine pour préparer cette activité et la présenter en classe. Vous devez choisir la méthode, les outils, et organiser la démonstration.
