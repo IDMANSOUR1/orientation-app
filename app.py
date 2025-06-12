@@ -197,6 +197,18 @@ elif st.session_state["etape"] == "bloc3":
 
     try:
         prompt_situation = f"""
+Voici une situation complexe adaptée au profil scientifique :
+
+### 📘 Situation
+Tu es membre d’un club scientifique dans ton collège. Le directeur vous propose de concevoir une activité originale pour expliquer un phénomène scientifique aux élèves plus jeunes (comme le cycle de l’eau, la gravité ou l’électricité). Ton équipe a une semaine pour préparer cette activité et la présenter en classe. Vous devez choisir la méthode, les outils, et organiser la démonstration.
+
+### ✍️ Questions ouvertes
+1. Quelles étapes suivrais-tu pour organiser cette activité scientifique de manière claire et efficace ?
+2. Quels outils ou expériences utiliserais-tu pour rendre le phénomène compréhensible et intéressant ?
+3. Si tu rencontres une difficulté (temps limité, matériel manquant…), comment réagirais-tu pour résoudre le problème ?
+"""
+else:
+    prompt_situation = f"""
 Tu es un expert en orientation scolaire.
 
 Génère une **situation complexe** adaptée à un jeune élève marocain (niveau collège ou début lycée), au **profil estimé : {profil}**.
@@ -211,7 +223,7 @@ Génère une **situation complexe** adaptée à un jeune élève marocain (nivea
 1. Une situation concrète, réaliste, et engageante, en 4 à 6 lignes maximum.
    - Elle peut être scolaire ou non (vie quotidienne, projet, discussion…)
    - Elle doit intégrer au moins 2 dimensions cognitives ou expressives
-2. Ensuite, 3seulement **questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
+2. Ensuite, seulement **3 questions ouvertes** claires et stimulantes, qui invitent l’élève à réfléchir, s’exprimer, justifier, imaginer.
 
 📝 Style :
 - Langage accessible, direct, sans vocabulaire académique complexe.
@@ -223,6 +235,7 @@ Exemples :
 - Profil littéraire : situation où il faut argumenter, raconter ou interpréter un événement.
 
 Génère maintenant la situation et les questions.
+
 """
 
         if "situation_bloc3" not in st.session_state:
