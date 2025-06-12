@@ -196,7 +196,8 @@ elif st.session_state["etape"] == "bloc3":
     profil = st.session_state["orientation"]
 
     try:
-        prompt_situation = f"""
+if profil == "scientifique":
+    prompt_situation = """
 Voici une situation complexe adaptée au profil scientifique :
 
 ### 📘 Situation
@@ -235,8 +236,8 @@ Exemples :
 - Profil littéraire : situation où il faut argumenter, raconter ou interpréter un événement.
 
 Génère maintenant la situation et les questions.
-
 """
+
 
         if "situation_bloc3" not in st.session_state:
             response = client.chat.completions.create(
